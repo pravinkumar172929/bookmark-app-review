@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { pool } from "../db";
+import bcrypt from "bcrypt";
 
 const router = Router();
 
@@ -23,6 +24,14 @@ router.post("/signup", async (req, res) => {
     res.status(409).json("Email already exists");
     return;
   }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  console.log("hashedPassword => ", hashedPassword);
+
+  await pool.query(
+    "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email, created_at",
+    [email, hashedPassword]
+  );
 
   res.status(200).json("Validation passed");
 });
