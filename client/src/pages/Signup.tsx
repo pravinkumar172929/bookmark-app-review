@@ -7,8 +7,11 @@ export const Signup = () => {
     confirmPassword: "",
   });
 
+  const [error, setError] = useState("");
+
   const signupHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    setError("");
     setSignupValues((prevValues) => ({
       ...prevValues,
       [name]: value,
@@ -18,13 +21,12 @@ export const Signup = () => {
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
     if (signupValues.password !== signupValues.confirmPassword) {
-      console.log("Passwords do not match");
-    } else {
-      console.log("Ready to signup");
+      setError("Passwords do not match");
+      return;
     }
-  };
 
-  //   console.log("signupValues => ", signupValues);
+    console.log("Ready to signup");
+  };
 
   return (
     <div>
@@ -50,6 +52,7 @@ export const Signup = () => {
           name="confirmPassword"
           onChange={signupHandler}
         />
+        {error && <p>{error}</p>}
         <button type="submit">Sign Up</button>
       </form>
     </div>
