@@ -26,6 +26,23 @@ export const Signup = () => {
     }
 
     console.log("Ready to signup");
+
+    const signupData = {
+      email: signupValues.email,
+      password: signupValues.password,
+    };
+
+    fetch("http://localhost:5001/api/auth/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(signupData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("sigup Response => ", data);
+      });
   };
 
   return (
