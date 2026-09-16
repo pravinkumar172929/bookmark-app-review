@@ -28,12 +28,12 @@ router.post("/signup", async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   console.log("hashedPassword => ", hashedPassword);
 
-  await pool.query(
+  const addedUser = await pool.query(
     "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email, created_at",
     [email, hashedPassword]
   );
 
-  res.status(200).json("Validation passed");
+  return res.status(201).json(addedUser.rows[0]);
 });
 
 export default router;
