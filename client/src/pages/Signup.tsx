@@ -39,10 +39,28 @@ export const Signup = () => {
       },
       body: JSON.stringify(signupData),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("sigup Response => ", data);
+      .then(async (response) => {
+        const data = await response.json();
+
+        return {
+          ok: response.ok,
+          status: response.status,
+          data,
+        };
+      })
+      .then((result) => {
+        console.log(result);
+
+        if (!result.ok) {
+          setError(result.data);
+          return;
+        }
+
+        console.log("sigup Response => ", result.data);
       });
+    //   .then((data) => {
+    //     console.log("sigup Response => ", data);
+    //   });
   };
 
   return (
