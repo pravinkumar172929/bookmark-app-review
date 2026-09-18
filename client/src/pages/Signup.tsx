@@ -18,49 +18,42 @@ export const Signup = () => {
     }));
   };
 
-  const submitHandler = (e: React.FormEvent) => {
+  const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (signupValues.password !== signupValues.confirmPassword) {
-      setError("Passwords do not match");
+      setError("Passwords don't match!");
       return;
     }
-
-    console.log("Ready to signup");
 
     const signupData = {
       email: signupValues.email,
       password: signupValues.password,
     };
 
-    fetch("http://localhost:5001/api/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(signupData),
-    })
-      .then(async (response) => {
-        const data = await response.json();
-
-        return {
-          ok: response.ok,
-          status: response.status,
-          data,
-        };
-      })
-      .then((result) => {
-        console.log(result);
-
-        if (!result.ok) {
-          setError(result.data);
-          return;
-        }
-
-        console.log("sigup Response => ", result.data);
+    try {
+      const response = await fetch("http://localhost:5001/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(signupData),
       });
-    //   .then((data) => {
-    //     console.log("sigup Response => ", data);
-    //   });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data);
+        return;
+      }
+
+      console.log("signup successful: ", data);
+    } catch (error) {
+      console.log("signup error:", error);
+      setError("Something went wrong!");
+    } finally {
+      console.log("signup request completed");
+    }
   };
 
   return (
