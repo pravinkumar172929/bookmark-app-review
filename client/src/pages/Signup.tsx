@@ -10,8 +10,6 @@ export const Signup = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  console.log("loading => ", loading);
-
   const signupHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setError("");
@@ -35,6 +33,7 @@ export const Signup = () => {
     };
 
     try {
+      setError("");
       setLoading(true);
       const response = await fetch("http://localhost:5001/api/auth/signup", {
         method: "POST",
@@ -87,7 +86,7 @@ export const Signup = () => {
         />
         {error && <p>{error}</p>}
         <button type="submit" disabled={loading}>
-          Sign Up
+          {loading ? "Signing Up" : "Sign Up"}
         </button>
       </form>
     </div>
