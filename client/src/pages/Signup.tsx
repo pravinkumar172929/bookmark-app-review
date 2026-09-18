@@ -8,6 +8,9 @@ export const Signup = () => {
   });
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  console.log("loading => ", loading);
 
   const signupHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -32,6 +35,7 @@ export const Signup = () => {
     };
 
     try {
+      setLoading(true);
       const response = await fetch("http://localhost:5001/api/auth/signup", {
         method: "POST",
         headers: {
@@ -53,6 +57,7 @@ export const Signup = () => {
       setError("Something went wrong!");
     } finally {
       console.log("signup request completed");
+      setLoading(false);
     }
   };
 
@@ -81,7 +86,9 @@ export const Signup = () => {
           onChange={signupHandler}
         />
         {error && <p>{error}</p>}
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={loading}>
+          Sign Up
+        </button>
       </form>
     </div>
   );
