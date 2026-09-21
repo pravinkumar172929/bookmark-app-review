@@ -3,6 +3,7 @@ import React, { useState } from "react";
 const Login = () => {
   const [signinValues, setSigninValues] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const signinHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -24,6 +25,7 @@ const Login = () => {
 
     try {
       setError("");
+      setLoading(true);
       const response = await fetch("http://localhost:5001/api/auth/login", {
         method: "POST",
         headers: {
@@ -42,6 +44,8 @@ const Login = () => {
     } catch (error) {
       console.log("signup error:", error);
       setError("Something went wrong!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,7 +67,9 @@ const Login = () => {
           name="password"
         />
         {error && <p>{error}</p>}
-        <button type="submit">Sign In</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Siginng In" : "Sign In"}
+        </button>
       </form>
     </div>
   );
