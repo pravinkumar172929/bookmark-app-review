@@ -6,72 +6,69 @@ The application is being built incrementally, with additional functionality and 
 
 ## Tech Stack
 
-### Frontend
+| Area            | Technologies                 |
+| --------------- | ---------------------------- |
+| Frontend        | React, TypeScript, Vite      |
+| Backend         | Node.js, Express, TypeScript |
+| Database        | PostgreSQL                   |
+| Database access | `pg`                         |
+| Authentication  | bcrypt                       |
+| Development     | Docker, Docker Compose       |
 
-- React
-- TypeScript
-- Vite
-
-### Backend
-
-- Node.js
-- Express
-- TypeScript
-- `pg` for PostgreSQL database access
-- bcrypt for password hashing
-
-### Database
-
-- PostgreSQL
-- Docker / Docker Compose
-
-The application uses PostgreSQL directly through the `pg` package rather than an ORM.
-
-## Project Structure
-
-bookmark-app/
-├── client/ # React + TypeScript frontend
-│ ├── src/
-│ └── ...
-│
-├── server/ # Node.js + Express backend
-│ ├── src/
-│ │ ├── db/
-│ │ ├── routes/
-│ │ ├── db.ts
-│ │ └── index.ts
-│ └── ...
-│
-├── docker-compose.yml # Local PostgreSQL setup
-├── .gitignore
-└── README.md
+The backend communicates directly with PostgreSQL using `pg` rather than an ORM.
 
 ## Architecture
 
-The application consists of three main parts:
-
+```text
 ┌──────────────────────┐
-│ React Client │
-│ TypeScript + Vite │
+│     React Client     │
+│   TypeScript + Vite  │
 └──────────┬───────────┘
-│
-│ HTTP / JSON
-▼
+           │
+           │ HTTP / JSON
+           ▼
 ┌──────────────────────┐
-│ Express Server │
-│ Node.js + TypeScript│
+│    Express Server    │
+│   Node.js + TypeScript│
 └──────────┬───────────┘
-│
-│ pg
-▼
+           │
+           │ pg
+           ▼
 ┌──────────────────────┐
-│ PostgreSQL │
-│ Docker Container │
+│      PostgreSQL      │
+│    Docker Container  │
 └──────────────────────┘
+```
 
-The frontend communicates with the backend through HTTP APIs. The backend handles validation, authentication, business logic, and database operations.
+The frontend communicates with the backend through HTTP APIs. The backend handles authentication, validation, business logic, and database operations.
 
-The backend connects to PostgreSQL using the `pg` package and a connection pool.
+## Project Structure
+
+```text
+bookmark-app/
+├── client/             # React + TypeScript frontend
+│   ├── src/
+│   └── README.md       # Frontend documentation
+│
+├── server/             # Node.js + Express backend
+│   ├── src/
+│   └── README.md       # Backend documentation
+│
+├── docker-compose.yml  # Local PostgreSQL setup
+├── .gitignore
+└── README.md
+```
+
+## Documentation
+
+Detailed documentation is maintained separately for each part of the application:
+
+- [Frontend Documentation](./client/README.md)
+- [Backend Documentation](./server/README.md)
+
+The frontend README covers the React application, UI behavior, API integration, and frontend development guidelines.
+
+The backend README covers the Express application, authentication APIs, PostgreSQL integration, database structure, error handling, and backend development guidelines.
 
 ## Prerequisites
 
@@ -91,23 +88,23 @@ git clone https://github.com/pravinkumar172929/bookmark-app
 cd bookmark-app
 ```
 
-### 2. Install frontend dependencies
+### 2. Install dependencies
+
+Install frontend dependencies:
 
 ```bash
 cd client
 npm install
 ```
 
-### 3. Install backend dependencies
+Install backend dependencies:
 
 ```bash
 cd ../server
 npm install
 ```
 
-### 4. Configure environment variables
-
-The backend uses environment variables for database configuration.
+### 3. Configure environment variables
 
 Create a `.env` file in the project root:
 
@@ -119,11 +116,9 @@ DB_HOST=localhost
 DB_PORT=5432
 ```
 
-Do not commit the `.env` file to Git, keep it in .gitignore.
+Do not commit `.env` or other files containing secrets.
 
-### 5. Start PostgreSQL
-
-PostgreSQL runs inside Docker.
+### 4. Start PostgreSQL
 
 From the project root:
 
@@ -131,21 +126,13 @@ From the project root:
 docker compose up -d
 ```
 
-To check running containers:
+Check the running containers:
 
 ```bash
 docker ps
 ```
 
-To stop the containers:
-
-```bash
-docker compose down
-```
-
-## Running the Application
-
-### Start the backend
+### 5. Start the backend
 
 ```bash
 cd server
@@ -158,7 +145,7 @@ The backend runs on:
 http://localhost:5001
 ```
 
-### Start the frontend
+### 6. Start the frontend
 
 In another terminal:
 
@@ -169,106 +156,9 @@ npm run dev
 
 The frontend runs on:
 
+```text
 http://localhost:5173
-
-## Current API
-
-### Authentication
-
-#### Sign Up
-
-POST /api/auth/signup
-
-Request:
-
-```json
-{
-  "email": "user@example.com",
-  "password": "password123"
-}
 ```
-
-The backend:
-
-1. Validates the request.
-2. Checks whether the email already exists.
-3. Hashes the password using bcrypt.
-4. Creates the user in PostgreSQL.
-5. Returns the newly created user's basic information.
-
-Passwords are never stored as plain text.
-
-#### Login
-
-POST /api/auth/login
-
-Request:
-
-```json
-{
-  "email": "user@example.com",
-  "password": "password123"
-}
-```
-
-The backend:
-
-1. Validates the request.
-2. Finds the user by email.
-3. Retrieves the stored password hash.
-4. Compares the supplied password with the stored hash using bcrypt.
-5. Returns a successful response when the credentials are valid.
-
-Authentication will continue to evolve as the application grows.
-
-## Database
-
-PostgreSQL is used as the application's database.
-
-The database runs inside Docker during local development rather than requiring PostgreSQL to be installed and managed directly on the host machine.
-
-The backend communicates with PostgreSQL using the [`pg`](https://www.npmjs.com/package/pg) package.
-
-A connection pool is used so that database connections can be reused across requests.
-
-## API Design
-
-Backend APIs should follow an OpenAPI-compliant approach where practical.
-
-The API schemas should clearly define:
-
-- HTTP methods
-- Endpoints
-- Request bodies
-- Response bodies
-- HTTP status codes
-- Error responses
-
-The API documentation does not need to be published or exposed through the application UI.
-
-## Development Workflow
-
-Development is done using feature branches.
-
-A typical workflow is:
-
-main
-│
-└── feature/<feature-name>
-│
-├── Make changes
-├── Test locally
-├── Commit changes
-├── Push branch
-└── Create Pull Request
-│
-▼
-Review
-│
-▼
-Merge
-
-Keep changes focused on the issue or feature being worked on.
 
 ## Current Features
 
@@ -279,13 +169,13 @@ Keep changes focused on the issue or feature being worked on.
 - User signup
 - Password hashing with bcrypt
 - User login
-- Basic frontend API error handling
-- Loading state during signup requests
-- CORS configuration for local frontend/backend development
+- Frontend API error handling
+- Loading states
+- CORS configuration for local development
 
 ## Planned Development
 
-The application will be developed incrementally.
+The application will continue to evolve incrementally.
 
 Potential future functionality includes:
 
@@ -300,4 +190,28 @@ Potential future functionality includes:
 - Automated tests
 - Additional production-ready infrastructure
 
-These are future areas of development and may change as the application evolves.
+These plans may change as the project evolves.
+
+## Development Workflow
+
+Development is done using feature branches.
+
+```text
+main
+ │
+ └── feature/<feature-name>
+      │
+      ├── Make changes
+      ├── Test locally
+      ├── Commit changes
+      ├── Push branch
+      └── Create Pull Request
+                │
+                ▼
+              Review
+                │
+                ▼
+              Merge
+```
+
+Keep changes focused on the issue or feature being worked on.

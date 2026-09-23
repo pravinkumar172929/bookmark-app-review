@@ -2,7 +2,9 @@
 
 The frontend of the Bookmark App is a React + TypeScript application built with Vite.
 
-It is responsible for the user interface, collecting user input, communicating with the backend APIs, and displaying loading, success, and error states.
+It is responsible for the user interface, collecting user input, communicating with backend APIs, and displaying loading, success, and error states.
+
+For overall project setup and architecture, see the [root README](../README.md).
 
 ## Tech Stack
 
@@ -26,21 +28,53 @@ npm run dev
 
 The frontend is available at:
 
+```text
 http://localhost:5173
+```
+
+The backend must also be running when testing API functionality.
 
 ## Frontend Structure
 
-The frontend is located inside the `client` directory.
-
+```text
 client/
 ├── src/
-│ ├── ...
-│ ├── App.tsx
-│ └── main.tsx
+│   ├── ...
+│   ├── App.tsx
+│   └── main.tsx
 ├── package.json
-└── ...
+└── README.md
+```
 
-The exact structure will evolve as new features are added.
+The structure will evolve as new features are added.
+
+## API Communication
+
+The frontend communicates with the backend using HTTP requests.
+
+During local development:
+
+```text
+Frontend
+http://localhost:5173
+       │
+       │ HTTP / JSON
+       ▼
+Backend
+http://localhost:5001
+```
+
+For example:
+
+```ts
+fetch("http://localhost:5001/api/auth/signup", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(signupData),
+});
+```
 
 ## Current Functionality
 
@@ -54,11 +88,13 @@ The signup form collects:
 
 Before sending the request, the frontend checks that the password and confirmation password match.
 
-The frontend then sends the signup request to:
+The request is sent to:
 
+```text
 POST /api/auth/signup
+```
 
-The backend response is handled by the frontend and appropriate error messages are displayed to the user.
+The frontend handles the backend response and displays appropriate success or error feedback.
 
 ### Login
 
@@ -67,37 +103,13 @@ The login form collects:
 - Email
 - Password
 
-The frontend sends the credentials to:
+The credentials are sent to:
 
+```text
 POST /api/auth/login
-
-The backend is responsible for validating the credentials.
-
-## API Communication
-
-The frontend communicates with the backend using HTTP requests.
-
-During local development:
-
-Frontend
-http://localhost:5173
-│
-│ HTTP request
-▼
-Backend
-http://localhost:5001
-
-For example:
-
-```ts
-fetch("http://localhost:5001/api/auth/signup", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(signupData),
-});
 ```
+
+Authentication and credential validation are handled by the backend.
 
 ## Form State
 
@@ -113,11 +125,11 @@ const [signupValues, setSignupValues] = useState({
 });
 ```
 
-Inputs are controlled inputs, meaning their values are managed by React state.
+The inputs are controlled inputs, meaning their values are managed by React state.
 
 ## Loading and Error Handling
 
-API requests should provide appropriate feedback to the user.
+The frontend provides feedback while API requests are in progress and when requests fail.
 
 The signup flow currently handles:
 
@@ -125,13 +137,13 @@ The signup flow currently handles:
 - API validation errors
 - Duplicate email errors
 - Unexpected request failures
-- Loading state while the request is in progress
+- Loading state
 
-The frontend should avoid exposing sensitive information such as passwords or password hashes in logs or UI messages.
+The frontend should not expose sensitive information such as passwords or password hashes in logs or UI messages.
 
 ## Development Guidelines
 
-When adding a new frontend feature:
+When adding a frontend feature:
 
 1. Create a feature branch.
 2. Implement the UI.
@@ -146,9 +158,9 @@ Keep frontend changes focused on the feature or issue being worked on.
 
 ## Backend Dependency
 
-The frontend requires the backend to be running when testing API functionality locally.
+The frontend requires the backend to be running for API-based functionality.
 
-Start the backend from the `server` directory:
+From the `server` directory:
 
 ```bash
 npm run dev
