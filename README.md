@@ -252,23 +252,21 @@ Development is done using feature branches.
 
 A typical workflow is:
 
-```text
 main
- │
- └── feature/<feature-name>
-          │
-          ├── Make changes
-          ├── Test locally
-          ├── Commit changes
-          ├── Push branch
-          └── Create Pull Request
-                    │
-                    ▼
-                 Review
-                    │
-                    ▼
-                  Merge
-```
+│
+└── feature/<feature-name>
+│
+├── Make changes
+├── Test locally
+├── Commit changes
+├── Push branch
+└── Create Pull Request
+│
+▼
+Review
+│
+▼
+Merge
 
 Keep changes focused on the issue or feature being worked on.
 
