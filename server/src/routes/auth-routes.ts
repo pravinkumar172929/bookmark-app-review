@@ -30,6 +30,8 @@ router.post("/signup", async (req, res) => {
   // }
 
   try {
+    throw new Error("Testing signup error handling");
+
     const result = await pool.query("SELECT id FROM users WHERE email = $1", [
       email,
     ]);
