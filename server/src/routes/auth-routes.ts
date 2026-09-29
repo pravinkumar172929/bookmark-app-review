@@ -17,29 +17,55 @@ router.post("/signup", async (req, res) => {
     return;
   }
 
-  const result = await pool.query("SELECT id FROM users WHERE email = $1", [
-    email,
-  ]);
+  // const result = await pool.query("SELECT id FROM users WHERE email = $1", [
+  //   email,
+  // ]);
 
-  // console.log(result.rows);
+  // // console.log(result.rows);
 
-  if (result.rows.length > 0) {
-    logger.warn("Signup attempted with existing email");
-    res.status(409).json("Email already exists");
-    return;
+  // if (result.rows.length > 0) {
+  //   logger.warn("Signup attempted with existing email");
+  //   res.status(409).json("Email already exists");
+  //   return;
+  // }
+
+  try {
+    const result = await pool.query("SELECT id FROM users WHERE email = $1", [
+      email,
+    ]);
+
+    // console.log(result.rows);
+
+    if (result.rows.length > 0) {
+      logger.warn("Signup attempted with existing email");
+      res.status(409).json("Email already exists");
+      return;
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const addedUser = await pool.query(
+      "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email, created_at",
+      [email, hashedPassword]
+    );
+
+    logger.info("User signup successful");
+
+    return res.status(201).json(addedUser.rows[0]);
+  } catch (error) {
+    logger.error(error, "Signup failed");
+    return res.status(500).json("Something went wrong");
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-  // console.log("hashedPassword => ", hashedPassword);
+  // const hashedPassword = await bcrypt.hash(password, 10);
+  // // console.log("hashedPassword => ", hashedPassword);
 
-  const addedUser = await pool.query(
-    "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email, created_at",
-    [email, hashedPassword]
-  );
+  // const addedUser = await pool.query(
+  //   "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email, created_at",
+  //   [email, hashedPassword]
+  // );
 
-  logger.info("User signup successful");
+  // logger.info("User signup successful");
 
-  return res.status(201).json(addedUser.rows[0]);
+  // return res.status(201).json(addedUser.rows[0]);
 });
 
 router.post("/login", async (req, res) => {
