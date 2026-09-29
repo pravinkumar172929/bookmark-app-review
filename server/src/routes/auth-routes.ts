@@ -1,15 +1,18 @@
 import { Router } from "express";
 import { pool } from "../db";
 import bcrypt from "bcrypt";
+import logger from "../logger";
 
 const router = Router();
 
 router.post("/signup", async (req, res) => {
-  console.log("req body => ", req.body);
+  // console.log("req body => ", req.body);
+  logger.info("Signup request received");
   //   res.send("signup request");
   const { email, password } = req.body;
 
   if (!email || !password) {
+    logger.warn("Signup request missing required fields");
     res.status(400).json("Email and password are required");
     return;
   }
@@ -18,20 +21,23 @@ router.post("/signup", async (req, res) => {
     email,
   ]);
 
-  console.log(result.rows);
+  // console.log(result.rows);
 
   if (result.rows.length > 0) {
+    logger.warn("Signup attempted with existing email");
     res.status(409).json("Email already exists");
     return;
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  console.log("hashedPassword => ", hashedPassword);
+  // console.log("hashedPassword => ", hashedPassword);
 
   const addedUser = await pool.query(
     "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email, created_at",
     [email, hashedPassword]
   );
+
+  logger.info("User signup successful");
 
   return res.status(201).json(addedUser.rows[0]);
 });

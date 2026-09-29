@@ -16,8 +16,8 @@ app.use("/api/auth", router);
 
 app.listen(5001);
 
-logger.info("Backend server started");
-logger.info("This is an info message");
-logger.warn("This is a warning");
-logger.error("This is an error");
-logger.debug("This is a debug message");
+// logger.info("Backend server started");
+// logger.info("This is an info message");
+// logger.warn("This is a warning");
+// logger.error("This is an error");
+// logger.debug("This is a debug message");
