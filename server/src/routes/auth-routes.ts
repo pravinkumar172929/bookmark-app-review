@@ -35,7 +35,7 @@ router.post("/signup", async (req, res) => {
     logger.info({ email }, "User signup successful");
     return res.status(201).json(addedUser.rows[0]);
   } catch (error) {
-    logger.error(error, "Signup failed");
+    logger.error({ error, email }, "Signup failed");
     return res.status(500).json("Something went wrong");
   }
 });
@@ -70,7 +70,7 @@ router.post("/login", async (req, res) => {
     logger.info("User login successful");
     return res.status(200).json("Login successful");
   } catch (error) {
-    logger.error(error, "Login failed");
+    logger.error({ error, email }, "Login failed");
     return res.status(500).json("Something went wrong");
   }
 });
