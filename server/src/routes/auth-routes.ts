@@ -6,7 +6,6 @@ import logger from "../logger";
 const router = Router();
 
 router.post("/signup", async (req, res) => {
-  logger.info("Signup request received");
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -42,7 +41,6 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  logger.info("Login request received");
   const { email, password } = req.body;
 
   if (!email || !password) {
