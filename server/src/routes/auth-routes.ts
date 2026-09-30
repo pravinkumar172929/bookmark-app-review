@@ -21,7 +21,7 @@ router.post("/signup", async (req, res) => {
     ]);
 
     if (result.rows.length > 0) {
-      logger.warn("Signup attempted with existing email");
+      logger.warn({ email }, "Signup attempted with existing email");
       res.status(409).json("Email already exists");
       return;
     }
@@ -33,7 +33,7 @@ router.post("/signup", async (req, res) => {
       [email, hashedPassword]
     );
 
-    logger.info("User signup successful");
+    logger.info({ email }, "User signup successful");
     return res.status(201).json(addedUser.rows[0]);
   } catch (error) {
     logger.error(error, "Signup failed");
@@ -46,7 +46,6 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    logger.warn("Login request missing required fields");
     res.status(400).json("Email and password are required");
     return;
   }
