@@ -67,24 +67,13 @@ router.post("/login", async (req, res) => {
       return res.status(401).json("Invalid email or password");
     }
 
+    req.session.userId = result.rows[0].id;
     logger.info("User login successful");
     return res.status(200).json("Login successful");
   } catch (error) {
     logger.error({ error, email }, "Login failed");
     return res.status(500).json("Something went wrong");
   }
-});
-
-router.get("/session-test", (req, res) => {
-  req.session.testValue = "hello-session";
-
-  return res.status(200).json({ message: "Session created" });
-});
-
-router.get("/session-check", (req, res) => {
-  return res.status(200).json({
-    testValue: req.session.testValue,
-  });
 });
 
 export default router;
