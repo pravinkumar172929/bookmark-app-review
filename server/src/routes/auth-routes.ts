@@ -75,4 +75,16 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/session-test", (req, res) => {
+  req.session.testValue = "hello-session";
+
+  return res.status(200).json({ message: "Session created" });
+});
+
+router.get("/session-check", (req, res) => {
+  return res.status(200).json({
+    testValue: req.session.testValue,
+  });
+});
+
 export default router;
