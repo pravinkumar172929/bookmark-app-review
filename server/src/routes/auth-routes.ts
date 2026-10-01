@@ -2,6 +2,7 @@ import { Router } from "express";
 import { pool } from "../db";
 import bcrypt from "bcrypt";
 import logger from "../logger";
+import { error } from "node:console";
 
 const router = Router();
 
@@ -74,6 +75,18 @@ router.post("/login", async (req, res) => {
     logger.error({ error, email }, "Login failed");
     return res.status(500).json("Something went wrong");
   }
+});
+
+router.post("/logout", (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      return res.status(500).json("Something went wrong");
+    }
+
+    res.clearCookie("connect.sid");
+
+    return res.status(200).json("Logout successful");
+  });
 });
 
 router.get("/protected-test", (req, res) => {
