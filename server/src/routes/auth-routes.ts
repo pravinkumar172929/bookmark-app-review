@@ -76,4 +76,15 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/protected-test", (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).json("Not authenticated");
+  }
+
+  return res.status(200).json({
+    message: "You are authenticated",
+    userId: req.session.userId,
+  });
+});
+
 export default router;
