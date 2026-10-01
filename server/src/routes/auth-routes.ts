@@ -2,7 +2,6 @@ import { Router } from "express";
 import { pool } from "../db";
 import bcrypt from "bcrypt";
 import logger from "../logger";
-import { error } from "node:console";
 
 const router = Router();
 
