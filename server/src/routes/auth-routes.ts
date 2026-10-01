@@ -67,12 +67,25 @@ router.post("/login", async (req, res) => {
       return res.status(401).json("Invalid email or password");
     }
 
+    req.session.userId = result.rows[0].id;
     logger.info("User login successful");
     return res.status(200).json("Login successful");
   } catch (error) {
     logger.error({ error, email }, "Login failed");
     return res.status(500).json("Something went wrong");
   }
+});
+
+router.post("/logout", (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      return res.status(500).json("Something went wrong");
+    }
+
+    res.clearCookie("connect.sid");
+
+    return res.status(200).json("Logout successful");
+  });
 });
 
 export default router;
