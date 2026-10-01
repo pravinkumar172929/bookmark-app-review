@@ -1,44 +1,46 @@
 import { Router } from "express";
 import { pool } from "../db";
 import bcrypt from "bcrypt";
+import logger from "../logger";
 
 const router = Router();
 
 router.post("/signup", async (req, res) => {
-  console.log("req body => ", req.body);
-  //   res.send("signup request");
   const { email, password } = req.body;
 
   if (!email || !password) {
+    logger.warn("Signup request missing required fields");
     res.status(400).json("Email and password are required");
     return;
   }
 
-  const result = await pool.query("SELECT id FROM users WHERE email = $1", [
-    email,
-  ]);
+  try {
+    const result = await pool.query("SELECT id FROM users WHERE email = $1", [
+      email,
+    ]);
 
-  console.log(result.rows);
+    if (result.rows.length > 0) {
+      logger.warn({ email }, "Signup attempted with existing email");
+      res.status(409).json("Email already exists");
+      return;
+    }
 
-  if (result.rows.length > 0) {
-    res.status(409).json("Email already exists");
-    return;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const addedUser = await pool.query(
+      "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email, created_at",
+      [email, hashedPassword]
+    );
+
+    logger.info({ email }, "User signup successful");
+    return res.status(201).json(addedUser.rows[0]);
+  } catch (error) {
+    logger.error({ error, email }, "Signup failed");
+    return res.status(500).json("Something went wrong");
   }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-  console.log("hashedPassword => ", hashedPassword);
-
-  const addedUser = await pool.query(
-    "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email, created_at",
-    [email, hashedPassword]
-  );
-
-  return res.status(201).json(addedUser.rows[0]);
 });
 
 router.post("/login", async (req, res) => {
-  console.log("req body => ", req.body);
-
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -46,24 +48,31 @@ router.post("/login", async (req, res) => {
     return;
   }
 
-  const result = await pool.query(
-    "SELECT id, password FROM users WHERE email = $1",
-    [email]
-  );
+  try {
+    const result = await pool.query(
+      "SELECT id, password FROM users WHERE email = $1",
+      [email]
+    );
 
-  if (result.rows.length === 0) {
-    return res.status(401).json("Invalid email or password");
+    if (result.rows.length === 0) {
+      return res.status(401).json("Invalid email or password");
+    }
+
+    const hashedPassword = result.rows[0].password;
+
+    const isPasswordCorrect = await bcrypt.compare(password, hashedPassword);
+
+    if (!isPasswordCorrect) {
+      logger.warn("Login failed due to invalid credentials");
+      return res.status(401).json("Invalid email or password");
+    }
+
+    logger.info("User login successful");
+    return res.status(200).json("Login successful");
+  } catch (error) {
+    logger.error({ error, email }, "Login failed");
+    return res.status(500).json("Something went wrong");
   }
-
-  const hashedPassword = result.rows[0].password;
-
-  const isPasswordCorrect = await bcrypt.compare(password, hashedPassword);
-
-  if (!isPasswordCorrect) {
-    return res.status(401).json("Invalid email or password");
-  }
-
-  return res.status(200).json("Login successful");
 });
 
 export default router;
