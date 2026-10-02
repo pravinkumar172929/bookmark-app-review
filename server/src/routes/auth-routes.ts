@@ -90,11 +90,4 @@ router.post("/logout", (req, res) => {
   });
 });
 
-router.get("/protected-test", requireAuth, (req, res) => {
-  return res.status(200).json({
-    message: "You are authenticated",
-    userId: req.session.userId,
-  });
-});
-
 export default router;
