@@ -2,6 +2,7 @@ import { Router } from "express";
 import { pool } from "../db";
 import bcrypt from "bcrypt";
 import logger from "../logger";
+import requireAuth from "../middleware/requireAuth";
 
 const router = Router();
 
@@ -85,6 +86,13 @@ router.post("/logout", (req, res) => {
     res.clearCookie("connect.sid");
 
     return res.status(200).json("Logout successful");
+  });
+});
+
+router.get("/protected-test", requireAuth, (req, res) => {
+  return res.status(200).json({
+    message: "You are authenticated",
+    userId: req.session.userId,
   });
 });
 
