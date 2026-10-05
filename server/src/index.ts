@@ -3,6 +3,7 @@ import cors from "cors";
 import router from "./routes/auth-routes";
 import pinoHttp from "pino-http";
 import session from "express-session";
+import bookmarkRouter from "./routes/bookmark-routes";
 
 const app = express();
 
@@ -27,5 +28,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", router);
+
+app.use("/api/bookmarks", bookmarkRouter);
 
 app.listen(5001);

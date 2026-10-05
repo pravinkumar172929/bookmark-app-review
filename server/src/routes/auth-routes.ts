@@ -2,6 +2,7 @@ import { Router } from "express";
 import { pool } from "../db";
 import bcrypt from "bcrypt";
 import logger from "../logger";
+import requireAuth from "../middleware/requireAuth";
 
 const router = Router();
 
@@ -68,6 +69,7 @@ router.post("/login", async (req, res) => {
     }
 
     req.session.userId = result.rows[0].id;
+    logger.info(req.session.userId);
     logger.info("User login successful");
     return res.status(200).json("Login successful");
   } catch (error) {
