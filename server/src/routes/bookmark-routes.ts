@@ -41,10 +41,18 @@ bookmarkRouter.get("/", requireAuth, async (req, res) => {
       [userId]
     );
 
-    const userBookmarks = result.rows[0];
+    if (result.rows.length === 0) {
+      return res.status(200).json([]);
+    }
+
+    const userBookmarks = result.rows;
 
     logger.info(userBookmarks);
-  } catch (error) {}
+    return res.status(200).json(userBookmarks);
+  } catch (error) {
+    logger.error({}, "bookmark fetching failed");
+    return res.status(500).json("Something went wrong");
+  }
 });
 
 export default bookmarkRouter;
