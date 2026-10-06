@@ -31,4 +31,9 @@ bookmarkRouter.post("/", requireAuth, async (req, res) => {
   }
 });
 
+bookmarkRouter.get("/", requireAuth, async (req, res) => {
+  const userId = req.session.userId;
+  logger.info({ userId }, "Fetching bookmarks for user");
+});
+
 export default bookmarkRouter;
