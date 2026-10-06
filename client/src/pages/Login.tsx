@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [signinValues, setSigninValues] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,6 +40,7 @@ const Login = () => {
 
       const data = await response.json();
       console.log("data => ", data);
+      navigate("/bookmarks");
 
       if (!response.ok) {
         setError(data);
