@@ -72,7 +72,7 @@ const Bookmarks = () => {
         />
         {error && <p>{error}</p>}
 
-        <button type="submit">
+        <button type="submit" disabled={loading}>
           {loading ? "Adding Bookmark" : "Add Bookmark"}
         </button>
       </form>
