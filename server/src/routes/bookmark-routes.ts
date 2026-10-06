@@ -34,6 +34,17 @@ bookmarkRouter.post("/", requireAuth, async (req, res) => {
 bookmarkRouter.get("/", requireAuth, async (req, res) => {
   const userId = req.session.userId;
   logger.info({ userId }, "Fetching bookmarks for user");
+
+  try {
+    const result = await pool.query(
+      "SELECT id, title, url, created_at FROM bookmarks WHERE user_id =$1",
+      [userId]
+    );
+
+    const userBookmarks = result.rows[0];
+
+    logger.info(userBookmarks);
+  } catch (error) {}
 });
 
 export default bookmarkRouter;
