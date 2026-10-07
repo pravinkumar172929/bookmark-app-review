@@ -87,11 +87,6 @@ const Bookmarks = () => {
     return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
   });
 
-  console.log("bookmarks => ", bookmarks);
-  console.log(Array.isArray(bookmarks));
-
-  console.log(sortOrder);
-
   return (
     <>
       <input
