@@ -16,7 +16,7 @@ const Bookmarks = () => {
   const [loading, setLoading] = useState(false);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [search, setSearch] = useState("");
-  const [sortOrder, setSortOrder] = useState("desc");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
   useEffect(() => {
     const fetchBookmarks = async () => {
@@ -81,8 +81,8 @@ const Bookmarks = () => {
   );
 
   const sortedBookmarks = [...filteredBookmars].sort((a, b) => {
-    const dateA = new Date(a.created_at);
-    const dateB = new Date(b.created_at);
+    const dateA = new Date(a.created_at).getTime();
+    const dateB = new Date(b.created_at).getTime();
 
     return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
   });
@@ -113,7 +113,7 @@ const Bookmarks = () => {
 
       <select
         value={sortOrder}
-        onChange={(event) => setSortOrder(event.target.value)}
+        onChange={(event) => setSortOrder(event.target.value as "asc" | "desc")}
       >
         <option value="dec">Newest First</option>
         <option value="asc">Oldest First</option>
