@@ -16,7 +16,7 @@ const Bookmarks = () => {
   const [loading, setLoading] = useState(false);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [search, setSearch] = useState("");
-  const [sortOrder, setSortOrder] = useState("dec");
+  const [sortOrder, setSortOrder] = useState("desc");
 
   useEffect(() => {
     const fetchBookmarks = async () => {
@@ -80,6 +80,16 @@ const Bookmarks = () => {
     bookmark.title.toLowerCase().includes(search.toLowerCase())
   );
 
+  const sortedBookmarks = [...filteredBookmars].sort((a, b) => {
+    const dateA = new Date(a.created_at);
+    const dateB = new Date(b.created_at);
+
+    return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+  });
+
+  console.log("bookmarks => ", bookmarks);
+  console.log(Array.isArray(bookmarks));
+
   console.log(sortOrder);
 
   return (
@@ -90,10 +100,10 @@ const Bookmarks = () => {
         value={search}
         onChange={searchHandler}
       />
-      {filteredBookmars.length === 0 ? (
+      {sortedBookmarks.length === 0 ? (
         <p>No bookmarks found</p>
       ) : (
-        filteredBookmars.map((bookmark) => (
+        sortedBookmarks.map((bookmark) => (
           <div key={bookmark.id}>
             <p>{bookmark.title}</p>
             <p>{bookmark.url}</p>
