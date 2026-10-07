@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Bookmarks = () => {
   const [bookmarkValues, setBookmarkValues] = useState({
@@ -7,6 +7,20 @@ const Bookmarks = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [bookmarks, setBookmarks] = useState([]);
+
+  useEffect(() => {
+    const fetchBookmarks = async () => {
+      const res = await fetch("http://localhost:5001/api/bookmarks", {
+        credentials: "include",
+      });
+      const data = await res.json();
+      console.log("data => ", data);
+      setBookmarks(data);
+    };
+
+    fetchBookmarks();
+  }, []);
 
   const bookmarkHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -55,6 +69,12 @@ const Bookmarks = () => {
 
   return (
     <>
+      {bookmarks.map((bookmark) => (
+        <div key={bookmark.id}>
+          <p>{bookmark.title}</p>
+          <p>{bookmark.url}</p>
+        </div>
+      ))}
       <form onSubmit={submitHandler}>
         <input
           type="text"
