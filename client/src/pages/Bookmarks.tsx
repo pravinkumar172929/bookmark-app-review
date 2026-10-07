@@ -110,7 +110,7 @@ const Bookmarks = () => {
         value={sortOrder}
         onChange={(event) => setSortOrder(event.target.value as "asc" | "desc")}
       >
-        <option value="dec">Newest First</option>
+        <option value="desc">Newest First</option>
         <option value="asc">Oldest First</option>
       </select>
 
