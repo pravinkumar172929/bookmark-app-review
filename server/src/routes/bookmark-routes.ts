@@ -55,4 +55,27 @@ bookmarkRouter.get("/", requireAuth, async (req, res) => {
   }
 });
 
+bookmarkRouter.put("/:id", requireAuth, async (req, res) => {
+  const { id } = req.params;
+  const { title, url } = req.body;
+  const userId = req.session.userId;
+
+  try {
+    console.log("PUT BOOKMARK ROUTE HIT");
+    const result = await pool.query(
+      "UPDATE bookmarks SET title = $1, url = $2 WHERE id = $3 AND user_id =$4 RETURNING id, title, url, created_at",
+      [title, url, id, userId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json("Bookmark not found");
+    }
+
+    return res.status(200).json(result.rows[0]);
+  } catch (error) {
+    logger.error({}, "bookmark update failed");
+    return res.status(500).json("Something went wrong");
+  }
+});
+
 export default bookmarkRouter;
