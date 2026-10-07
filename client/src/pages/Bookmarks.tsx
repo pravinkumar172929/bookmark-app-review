@@ -16,6 +16,7 @@ const Bookmarks = () => {
   const [loading, setLoading] = useState(false);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [search, setSearch] = useState("");
+  const [sortOrder, setSortOrder] = useState("dec");
 
   useEffect(() => {
     const fetchBookmarks = async () => {
@@ -79,6 +80,8 @@ const Bookmarks = () => {
     bookmark.title.toLowerCase().includes(search.toLowerCase())
   );
 
+  console.log(sortOrder);
+
   return (
     <>
       <input
@@ -97,6 +100,15 @@ const Bookmarks = () => {
           </div>
         ))
       )}
+
+      <select
+        value={sortOrder}
+        onChange={(event) => setSortOrder(event.target.value)}
+      >
+        <option value="dec">Newest First</option>
+        <option value="asc">Oldest First</option>
+      </select>
+
       <form onSubmit={submitHandler}>
         <input
           type="text"
