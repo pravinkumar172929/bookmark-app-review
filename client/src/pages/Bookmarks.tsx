@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
 
+type Bookmark = {
+  id: string;
+  title: string;
+  url: string;
+  created_at: string;
+};
+
 const Bookmarks = () => {
   const [bookmarkValues, setBookmarkValues] = useState({
     title: "",
@@ -7,7 +14,7 @@ const Bookmarks = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [bookmarks, setBookmarks] = useState([]);
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
 
   useEffect(() => {
     const fetchBookmarks = async () => {
