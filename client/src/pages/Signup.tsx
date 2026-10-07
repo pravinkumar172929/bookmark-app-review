@@ -50,13 +50,9 @@ export const Signup = () => {
         setError(data);
         return;
       }
-
-      console.log("signup successful: ", data);
     } catch (error) {
-      console.log("signup error:", error);
       setError("Something went wrong!");
     } finally {
-      console.log("signup request completed");
       setLoading(false);
     }
   };

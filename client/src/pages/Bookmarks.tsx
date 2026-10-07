@@ -22,7 +22,6 @@ const Bookmarks = () => {
         credentials: "include",
       });
       const data = await res.json();
-      console.log("data => ", data);
       setBookmarks(data);
     };
 
@@ -40,7 +39,6 @@ const Bookmarks = () => {
 
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("bookmarkValues => ", bookmarkValues);
 
     const bookmarkData = {
       title: bookmarkValues.title,
@@ -61,13 +59,11 @@ const Bookmarks = () => {
 
       const data = await response.json();
 
-      console.log("bookmark response => ", data);
-
       if (!response.ok) {
         setError(data);
+        return;
       }
     } catch (error) {
-      console.log("bookmark error:", error);
       setError("Something went wrong!");
     } finally {
       setLoading(false);

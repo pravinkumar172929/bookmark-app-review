@@ -19,7 +19,6 @@ const Login = () => {
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(signinValues);
 
     const signinData = {
       email: signinValues.email,
@@ -39,15 +38,14 @@ const Login = () => {
       });
 
       const data = await response.json();
-      console.log("data => ", data);
-      navigate("/bookmarks");
 
       if (!response.ok) {
         setError(data);
         return;
       }
+
+      navigate("/bookmarks");
     } catch (error) {
-      console.log("signup error:", error);
       setError("Something went wrong!");
     } finally {
       setLoading(false);
