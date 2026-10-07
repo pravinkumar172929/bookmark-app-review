@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [signinValues, setSigninValues] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,7 +19,6 @@ const Login = () => {
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(signinValues);
 
     const signinData = {
       email: signinValues.email,
@@ -29,6 +30,7 @@ const Login = () => {
       setLoading(true);
       const response = await fetch("http://localhost:5001/api/auth/login", {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -36,14 +38,14 @@ const Login = () => {
       });
 
       const data = await response.json();
-      console.log("data => ", data);
 
       if (!response.ok) {
         setError(data);
         return;
       }
+
+      navigate("/bookmarks");
     } catch (error) {
-      console.log("signup error:", error);
       setError("Something went wrong!");
     } finally {
       setLoading(false);
