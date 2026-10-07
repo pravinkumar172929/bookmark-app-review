@@ -87,12 +87,16 @@ const Bookmarks = () => {
         value={search}
         onChange={searchHandler}
       />
-      {filteredBookmars.map((bookmark) => (
-        <div key={bookmark.id}>
-          <p>{bookmark.title}</p>
-          <p>{bookmark.url}</p>
-        </div>
-      ))}
+      {filteredBookmars.length === 0 ? (
+        <p>No bookmarks found</p>
+      ) : (
+        filteredBookmars.map((bookmark) => (
+          <div key={bookmark.id}>
+            <p>{bookmark.title}</p>
+            <p>{bookmark.url}</p>
+          </div>
+        ))
+      )}
       <form onSubmit={submitHandler}>
         <input
           type="text"
