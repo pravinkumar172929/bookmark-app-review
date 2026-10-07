@@ -15,6 +15,7 @@ const Bookmarks = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchBookmarks = async () => {
@@ -70,9 +71,23 @@ const Bookmarks = () => {
     }
   };
 
+  const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  const filteredBookmars = bookmarks.filter((bookmark) =>
+    bookmark.title.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <>
-      {bookmarks.map((bookmark) => (
+      <input
+        type="text"
+        placeholder="Search bookmark"
+        value={search}
+        onChange={searchHandler}
+      />
+      {filteredBookmars.map((bookmark) => (
         <div key={bookmark.id}>
           <p>{bookmark.title}</p>
           <p>{bookmark.url}</p>
