@@ -53,14 +53,24 @@ const Bookmarks = () => {
     try {
       setError("");
       setLoading(true);
-      const response = await fetch("http://localhost:5001/api/bookmarks", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookmarkData),
-      });
+
+      const isEditing = editingBookmarkId !== null;
+
+      console.log(isEditing);
+
+      const response = await fetch(
+        !isEditing
+          ? "http://localhost:5001/api/bookmarks"
+          : `http://localhost:5001/api/bookmarks/${editingBookmarkId}`,
+        {
+          method: !isEditing ? "POST" : "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bookmarkData),
+        }
+      );
 
       const data = await response.json();
 
