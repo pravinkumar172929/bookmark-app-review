@@ -17,6 +17,9 @@ const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [search, setSearch] = useState("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [editingBookmarkId, setEditingBookmarkId] = useState<null | string>(
+    null
+  );
 
   useEffect(() => {
     const fetchBookmarks = async () => {
@@ -87,6 +90,11 @@ const Bookmarks = () => {
     return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
   });
 
+  const editingHandler = (id: string) => {
+    setEditingBookmarkId(id);
+  };
+  console.log(editingBookmarkId);
+
   return (
     <>
       <input
@@ -102,6 +110,7 @@ const Bookmarks = () => {
           <div key={bookmark.id}>
             <p>{bookmark.title}</p>
             <p>{bookmark.url}</p>
+            <button onClick={() => editingHandler(bookmark.id)}>Edit</button>
           </div>
         ))
       )}
