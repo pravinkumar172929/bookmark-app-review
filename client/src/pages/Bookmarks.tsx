@@ -90,8 +90,13 @@ const Bookmarks = () => {
     return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
   });
 
-  const editingHandler = (id: string) => {
-    setEditingBookmarkId(id);
+  const editingHandler = (bookmark: Bookmark) => {
+    setEditingBookmarkId(bookmark.id);
+
+    setBookmarkValues({
+      title: bookmark.title,
+      url: bookmark.title,
+    });
   };
   console.log(editingBookmarkId);
 
@@ -110,7 +115,7 @@ const Bookmarks = () => {
           <div key={bookmark.id}>
             <p>{bookmark.title}</p>
             <p>{bookmark.url}</p>
-            <button onClick={() => editingHandler(bookmark.id)}>Edit</button>
+            <button onClick={() => editingHandler(bookmark)}>Edit</button>
           </div>
         ))
       )}
