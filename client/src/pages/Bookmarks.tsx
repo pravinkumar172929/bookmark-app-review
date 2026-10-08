@@ -100,6 +100,15 @@ const Bookmarks = () => {
   };
   console.log(editingBookmarkId);
 
+  const cancelHandler = () => {
+    setEditingBookmarkId(null);
+
+    setBookmarkValues({
+      title: "",
+      url: "",
+    });
+  };
+
   return (
     <>
       <input
@@ -149,7 +158,7 @@ const Bookmarks = () => {
           {loading ? "Adding Bookmark" : "Add Bookmark"}
         </button>
 
-        {editingBookmarkId && <button>Cancel</button>}
+        {editingBookmarkId && <button onClick={cancelHandler}>Cancel</button>}
       </form>
     </>
   );
