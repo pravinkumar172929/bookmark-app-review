@@ -56,8 +56,6 @@ const Bookmarks = () => {
 
       const isEditing = editingBookmarkId !== null;
 
-      console.log(isEditing);
-
       const response = await fetch(
         !isEditing
           ? "http://localhost:5001/api/bookmarks"
@@ -108,7 +106,6 @@ const Bookmarks = () => {
       url: bookmark.url,
     });
   };
-  console.log(editingBookmarkId);
 
   const cancelHandler = () => {
     setEditingBookmarkId(null);
