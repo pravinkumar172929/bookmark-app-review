@@ -119,6 +119,14 @@ const Bookmarks = () => {
     });
   };
 
+  const submitButtonText = loading
+    ? editingBookmarkId
+      ? "Editing Bookmark"
+      : "Adding Bookmark"
+    : editingBookmarkId
+    ? "Edit Bookmark"
+    : "Add Bookmark";
+
   return (
     <>
       <input
@@ -165,7 +173,7 @@ const Bookmarks = () => {
         {error && <p>{error}</p>}
 
         <button type="submit" disabled={loading}>
-          {loading ? "Adding Bookmark" : "Add Bookmark"}
+          {submitButtonText}
         </button>
 
         {editingBookmarkId && <button onClick={cancelHandler}>Cancel</button>}
