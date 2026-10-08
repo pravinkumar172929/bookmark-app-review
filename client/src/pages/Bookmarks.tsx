@@ -95,7 +95,7 @@ const Bookmarks = () => {
 
     setBookmarkValues({
       title: bookmark.title,
-      url: bookmark.title,
+      url: bookmark.url,
     });
   };
   console.log(editingBookmarkId);
@@ -148,6 +148,8 @@ const Bookmarks = () => {
         <button type="submit" disabled={loading}>
           {loading ? "Adding Bookmark" : "Add Bookmark"}
         </button>
+
+        {editingBookmarkId && <button>Cancel</button>}
       </form>
     </>
   );
