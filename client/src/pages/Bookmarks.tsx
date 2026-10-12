@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 type Bookmark = {
   id: string;
@@ -143,6 +144,8 @@ const Bookmarks = () => {
         <option value="desc">Newest First</option>
         <option value="asc">Oldest First</option>
       </select>
+
+      <Link to="/bookmarks/new">Create a bookmark</Link>
 
       <form onSubmit={submitHandler}>
         <input
