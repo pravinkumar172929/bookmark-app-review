@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CreateBookmark = () => {
+  const navigate = useNavigate();
+
   const [bookmarkValues, setBookmarkValues] = useState({
     title: "",
     url: "",
@@ -45,6 +48,8 @@ const CreateBookmark = () => {
         setError(data);
         return;
       }
+
+      navigate("/bookmarks");
     } catch (error) {
       setError("Something went wrong!");
     } finally {
@@ -57,6 +62,7 @@ const CreateBookmark = () => {
       title: "",
       url: "",
     });
+    navigate("/bookmarks");
   };
 
   return (
