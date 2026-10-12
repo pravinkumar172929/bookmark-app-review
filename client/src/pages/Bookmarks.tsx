@@ -95,7 +95,7 @@ const Bookmarks = () => {
 
   const editingHandler = (bookmark: Bookmark) => {
     // setEditingBookmarkId(bookmark.id);
-    navigate(`/bookmarks/:${bookmark.id}/edit`);
+    navigate(`/bookmarks/${bookmark.id}/edit`);
 
     // setBookmarkValues({
     //   title: bookmark.title,
