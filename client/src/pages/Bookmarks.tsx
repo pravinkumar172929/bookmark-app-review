@@ -90,17 +90,6 @@ const Bookmarks = () => {
     setSearch(e.target.value);
   };
 
-  const filteredBookmars = bookmarks.filter((bookmark) =>
-    bookmark.title.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const sortedBookmarks = [...filteredBookmars].sort((a, b) => {
-    const dateA = new Date(a.created_at).getTime();
-    const dateB = new Date(b.created_at).getTime();
-
-    return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
-  });
-
   const editingHandler = (bookmark: Bookmark) => {
     setEditingBookmarkId(bookmark.id);
 
