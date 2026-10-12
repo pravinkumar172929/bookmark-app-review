@@ -16,6 +16,26 @@ const CreateBookmark = () => {
 
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    const bookmarkData = {
+      title: bookmarkValues.title,
+      url: bookmarkValues.url,
+    };
+
+    try {
+      const response = await fetch("http://localhost:5001/api/bookmarks", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookmarkData),
+      });
+
+      const data = response.json();
+    } catch (error) {
+      // setError("Something went wrong!");
+    }
   };
 
   return (
