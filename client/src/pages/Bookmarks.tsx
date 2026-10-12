@@ -20,15 +20,18 @@ const Bookmarks = () => {
 
   useEffect(() => {
     const fetchBookmarks = async () => {
-      const res = await fetch("http://localhost:5001/api/bookmarks", {
-        credentials: "include",
-      });
+      const res = await fetch(
+        `http://localhost:5001/api/bookmarks?search=${search}&sort=${sortOrder}`,
+        {
+          credentials: "include",
+        }
+      );
       const data = await res.json();
       setBookmarks(data);
     };
 
     fetchBookmarks();
-  }, []);
+  }, [search, sortOrder]);
 
   const bookmarkHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -76,17 +79,6 @@ const Bookmarks = () => {
     setSearch(e.target.value);
   };
 
-  const filteredBookmars = bookmarks.filter((bookmark) =>
-    bookmark.title.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const sortedBookmarks = [...filteredBookmars].sort((a, b) => {
-    const dateA = new Date(a.created_at).getTime();
-    const dateB = new Date(b.created_at).getTime();
-
-    return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
-  });
-
   return (
     <>
       <input
@@ -95,10 +87,10 @@ const Bookmarks = () => {
         value={search}
         onChange={searchHandler}
       />
-      {sortedBookmarks.length === 0 ? (
+      {bookmarks.length === 0 ? (
         <p>No bookmarks found</p>
       ) : (
-        sortedBookmarks.map((bookmark) => (
+        bookmarks.map((bookmark) => (
           <div key={bookmark.id}>
             <p>{bookmark.title}</p>
             <p>{bookmark.url}</p>
