@@ -68,7 +68,6 @@ bookmarkRouter.put("/:id", requireAuth, async (req, res) => {
   const userId = req.session.userId;
 
   try {
-    console.log("PUT BOOKMARK ROUTE HIT");
     const result = await pool.query(
       "UPDATE bookmarks SET title = $1, url = $2 WHERE id = $3 AND user_id =$4 RETURNING id, title, url, created_at",
       [title, url, id, userId]
