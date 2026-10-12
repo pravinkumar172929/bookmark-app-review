@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 type Bookmark = {
   id: string;
@@ -9,6 +9,8 @@ type Bookmark = {
 };
 
 const Bookmarks = () => {
+  const navigate = useNavigate();
+
   const [bookmarkValues, setBookmarkValues] = useState({
     title: "",
     url: "",
@@ -92,12 +94,13 @@ const Bookmarks = () => {
   };
 
   const editingHandler = (bookmark: Bookmark) => {
-    setEditingBookmarkId(bookmark.id);
+    // setEditingBookmarkId(bookmark.id);
+    navigate(`/bookmarks/:${bookmark.id}/edit`);
 
-    setBookmarkValues({
-      title: bookmark.title,
-      url: bookmark.url,
-    });
+    // setBookmarkValues({
+    //   title: bookmark.title,
+    //   url: bookmark.url,
+    // });
   };
 
   const cancelHandler = () => {
