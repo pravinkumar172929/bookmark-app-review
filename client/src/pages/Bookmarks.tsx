@@ -39,89 +39,17 @@ const Bookmarks = () => {
     fetchBookmarks();
   }, [search, sortOrder]);
 
-  const bookmarkHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setError("");
-    setBookmarkValues((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const submitHandler = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    const bookmarkData = {
-      title: bookmarkValues.title,
-      url: bookmarkValues.url,
-    };
-
-    try {
-      setError("");
-      setLoading(true);
-
-      const isEditing = editingBookmarkId !== null;
-
-      const response = await fetch(
-        !isEditing
-          ? "http://localhost:5001/api/bookmarks"
-          : `http://localhost:5001/api/bookmarks/${editingBookmarkId}`,
-        {
-          method: !isEditing ? "POST" : "PUT",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(bookmarkData),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data);
-        return;
-      }
-    } catch (error) {
-      setError("Something went wrong!");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
   const editingHandler = (bookmark: Bookmark) => {
-    // setEditingBookmarkId(bookmark.id);
     navigate(`/bookmarks/${bookmark.id}/edit`);
-
-    // setBookmarkValues({
-    //   title: bookmark.title,
-    //   url: bookmark.url,
-    // });
   };
-
-  const cancelHandler = () => {
-    setEditingBookmarkId(null);
-
-    setBookmarkValues({
-      title: "",
-      url: "",
-    });
-  };
-
-  const submitButtonText = loading
-    ? editingBookmarkId
-      ? "Editing Bookmark"
-      : "Adding Bookmark"
-    : editingBookmarkId
-    ? "Edit Bookmark"
-    : "Add Bookmark";
 
   return (
     <>
+      <Link to="/bookmarks/new">Create a bookmark</Link>
       <input
         type="text"
         placeholder="Search bookmark"
@@ -147,32 +75,6 @@ const Bookmarks = () => {
         <option value="desc">Newest First</option>
         <option value="asc">Oldest First</option>
       </select>
-
-      <Link to="/bookmarks/new">Create a bookmark</Link>
-
-      <form onSubmit={submitHandler}>
-        <input
-          type="text"
-          placeholder="Title"
-          name="title"
-          value={bookmarkValues.title}
-          onChange={bookmarkHandler}
-        />
-        <input
-          type="text"
-          placeholder="URL"
-          name="url"
-          value={bookmarkValues.url}
-          onChange={bookmarkHandler}
-        />
-        {error && <p>{error}</p>}
-
-        <button type="submit" disabled={loading}>
-          {submitButtonText}
-        </button>
-
-        {editingBookmarkId && <button onClick={cancelHandler}>Cancel</button>}
-      </form>
     </>
   );
 };

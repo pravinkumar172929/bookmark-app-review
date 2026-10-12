@@ -11,7 +11,6 @@ type Bookmark = {
 const EditBookmark = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log("id => ", id);
 
   useEffect(() => {
     const fetchBookmark = async () => {
