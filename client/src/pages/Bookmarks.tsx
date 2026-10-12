@@ -11,18 +11,9 @@ type Bookmark = {
 const Bookmarks = () => {
   const navigate = useNavigate();
 
-  const [bookmarkValues, setBookmarkValues] = useState({
-    title: "",
-    url: "",
-  });
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [search, setSearch] = useState("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
-  const [editingBookmarkId, setEditingBookmarkId] = useState<null | string>(
-    null
-  );
 
   useEffect(() => {
     const fetchBookmarks = async () => {
