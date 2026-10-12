@@ -5,9 +5,13 @@ const CreateBookmark = () => {
     title: "",
     url: "",
   });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const bookmarkHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    setError("");
+
     setBookmarkValues((prev) => ({
       ...prev,
       [name]: value,
@@ -23,6 +27,9 @@ const CreateBookmark = () => {
     };
 
     try {
+      setError("");
+      setLoading(true);
+
       const response = await fetch("http://localhost:5001/api/bookmarks", {
         method: "POST",
         credentials: "include",
@@ -32,10 +39,24 @@ const CreateBookmark = () => {
         body: JSON.stringify(bookmarkData),
       });
 
-      const data = response.json();
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data);
+        return;
+      }
     } catch (error) {
-      // setError("Something went wrong!");
+      setError("Something went wrong!");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const cancelHandler = () => {
+    setBookmarkValues({
+      title: "",
+      url: "",
+    });
   };
 
   return (
@@ -55,13 +76,15 @@ const CreateBookmark = () => {
           value={bookmarkValues.url}
           onChange={bookmarkHandler}
         />
-        {/* {error && <p>{error}</p>} */}
+        {error && <p>{error}</p>}
 
-        <button type="submit">Add Bookmark</button>
+        <button type="submit" disabled={loading}>
+          Add Bookmark
+        </button>
 
-        <button type="button">Cancel</button>
-
-        {/* {editingBookmarkId && <button onClick={cancelHandler}>Cancel</button>} */}
+        <button type="button" onClick={cancelHandler}>
+          Cancel
+        </button>
       </form>
     </>
   );
