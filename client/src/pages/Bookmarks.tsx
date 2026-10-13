@@ -42,8 +42,6 @@ const Bookmarks = () => {
     navigate(`/bookmarks/${bookmark.id}/edit`);
   };
 
-  console.log(totalPages);
-
   return (
     <>
       <Link to="/bookmarks/new">Create a bookmark</Link>
