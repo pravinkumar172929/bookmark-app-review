@@ -24,7 +24,7 @@ const Bookmarks = () => {
         }
       );
       const data = await res.json();
-      setBookmarks(data);
+      setBookmarks(data.bookmarks);
     };
 
     fetchBookmarks();
