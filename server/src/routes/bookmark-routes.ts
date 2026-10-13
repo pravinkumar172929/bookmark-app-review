@@ -35,16 +35,21 @@ bookmarkRouter.get("/", requireAuth, async (req, res) => {
   const userId = req.session.userId;
   const search = typeof req.query.search === "string" ? req.query.search : "";
   const sort = req.query.sort === "asc" ? "ASC" : "DESC";
+  const page = Number(req.query.page) || 1;
 
   logger.info({ search }, "Search parameter received");
 
   logger.info({ sort }, "Sort parameter");
 
   logger.info({ userId }, "Fetching bookmarks for user");
+  logger.info({ page }, "Page parameter");
 
   try {
     const result = await pool.query(
-      `SELECT id, title, url, created_at FROM bookmarks WHERE user_id =$1 AND title ILIKE $2 ORDER BY created_at ${sort}`,
+      `SELECT id, title, url, created_at 
+      FROM bookmarks 
+      WHERE user_id =$1 AND title ILIKE $2 
+      ORDER BY created_at ${sort} LIMIT 10 OFFSET 10`,
       [userId, `%${search}%`]
     );
 
