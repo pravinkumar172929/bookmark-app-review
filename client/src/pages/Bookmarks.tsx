@@ -14,21 +14,24 @@ const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [search, setSearch] = useState("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     const fetchBookmarks = async () => {
       const res = await fetch(
-        `http://localhost:5001/api/bookmarks?search=${search}&sort=${sortOrder}`,
+        `http://localhost:5001/api/bookmarks?search=${search}&sort=${sortOrder}&page=${page}`,
         {
           credentials: "include",
         }
       );
       const data = await res.json();
       setBookmarks(data.bookmarks);
+      setTotalPages(data.pagination.totalPages);
     };
 
     fetchBookmarks();
-  }, [search, sortOrder]);
+  }, [search, sortOrder, page]);
 
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -37,6 +40,8 @@ const Bookmarks = () => {
   const editingHandler = (bookmark: Bookmark) => {
     navigate(`/bookmarks/${bookmark.id}/edit`);
   };
+
+  console.log(totalPages);
 
   return (
     <>
