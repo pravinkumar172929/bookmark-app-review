@@ -72,8 +72,15 @@ const Bookmarks = () => {
           </div>
         ))
       )}
-      <button onClick={() => setPage((prev) => prev - 1)}>Previous</button>
-      <button onClick={() => setPage((prev) => prev + 1)}>Next</button>
+      <button onClick={() => setPage((prev) => prev - 1)} disabled={page === 1}>
+        Previous
+      </button>
+      <button
+        onClick={() => setPage((prev) => prev + 1)}
+        disabled={page >= totalPages}
+      >
+        Next
+      </button>
     </>
   );
 };
