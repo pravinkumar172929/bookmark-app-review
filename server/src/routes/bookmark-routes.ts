@@ -51,8 +51,9 @@ bookmarkRouter.get("/", requireAuth, async (req, res) => {
       `SELECT id, title, url, created_at 
       FROM bookmarks 
       WHERE user_id =$1 AND title ILIKE $2 
-      ORDER BY created_at ${sort} LIMIT 10 OFFSET 10`,
-      [userId, `%${search}%`]
+      ORDER BY created_at ${sort} 
+      LIMIT $3 OFFSET $4`,
+      [userId, `%${search}%`, limit, offset]
     );
 
     if (result.rows.length === 0) {
