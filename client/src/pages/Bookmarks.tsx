@@ -52,6 +52,15 @@ const Bookmarks = () => {
         value={search}
         onChange={searchHandler}
       />
+
+      <select
+        value={sortOrder}
+        onChange={(event) => setSortOrder(event.target.value as "asc" | "desc")}
+      >
+        <option value="desc">Newest First</option>
+        <option value="asc">Oldest First</option>
+      </select>
+
       {bookmarks.length === 0 ? (
         <p>No bookmarks found</p>
       ) : (
@@ -63,14 +72,8 @@ const Bookmarks = () => {
           </div>
         ))
       )}
-
-      <select
-        value={sortOrder}
-        onChange={(event) => setSortOrder(event.target.value as "asc" | "desc")}
-      >
-        <option value="desc">Newest First</option>
-        <option value="asc">Oldest First</option>
-      </select>
+      <button onClick={() => setPage((prev) => prev - 1)}>Previous</button>
+      <button onClick={() => setPage((prev) => prev + 1)}>Next</button>
     </>
   );
 };
