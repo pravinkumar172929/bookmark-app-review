@@ -35,6 +35,7 @@ const Bookmarks = () => {
 
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
+    setPage(1);
   };
 
   const editingHandler = (bookmark: Bookmark) => {
@@ -55,7 +56,10 @@ const Bookmarks = () => {
 
       <select
         value={sortOrder}
-        onChange={(event) => setSortOrder(event.target.value as "asc" | "desc")}
+        onChange={(event) => {
+          setSortOrder(event.target.value as "asc" | "desc");
+          setPage(1);
+        }}
       >
         <option value="desc">Newest First</option>
         <option value="asc">Oldest First</option>
