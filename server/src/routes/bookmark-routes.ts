@@ -33,12 +33,19 @@ bookmarkRouter.post("/", requireAuth, async (req, res) => {
 
 bookmarkRouter.get("/", requireAuth, async (req, res) => {
   const userId = req.session.userId;
+  const search = typeof req.query.search === "string" ? req.query.search : "";
+  const sort = req.query.sort === "asc" ? "ASC" : "DESC";
+
+  logger.info({ search }, "Search parameter received");
+
+  logger.info({ sort }, "Sort parameter");
+
   logger.info({ userId }, "Fetching bookmarks for user");
 
   try {
     const result = await pool.query(
-      "SELECT id, title, url, created_at FROM bookmarks WHERE user_id =$1",
-      [userId]
+      `SELECT id, title, url, created_at FROM bookmarks WHERE user_id =$1 AND title ILIKE $2 ORDER BY created_at ${sort}`,
+      [userId, `%${search}%`]
     );
 
     if (result.rows.length === 0) {
@@ -51,6 +58,49 @@ bookmarkRouter.get("/", requireAuth, async (req, res) => {
     return res.status(200).json(userBookmarks);
   } catch (error) {
     logger.error({}, "bookmark fetching failed");
+    return res.status(500).json("Something went wrong");
+  }
+});
+
+bookmarkRouter.put("/:id", requireAuth, async (req, res) => {
+  const { id } = req.params;
+  const { title, url } = req.body;
+  const userId = req.session.userId;
+
+  try {
+    const result = await pool.query(
+      "UPDATE bookmarks SET title = $1, url = $2 WHERE id = $3 AND user_id =$4 RETURNING id, title, url, created_at",
+      [title, url, id, userId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json("Bookmark not found");
+    }
+
+    return res.status(200).json(result.rows[0]);
+  } catch (error) {
+    logger.error({}, "bookmark update failed");
+    return res.status(500).json("Something went wrong");
+  }
+});
+
+bookmarkRouter.get("/:id", requireAuth, async (req, res) => {
+  const { id } = req.params;
+  const userId = req.session.userId;
+
+  try {
+    const result = await pool.query(
+      "SELECT id, title, url, created_at FROM bookmarks WHERE id = $1 AND user_id = $2",
+      [id, userId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json("Bookmark not found");
+    }
+
+    return res.status(200).json(result.rows[0]);
+  } catch (error) {
+    logger.error({ error, id, userId }, "Bookmark fetching failed");
     return res.status(500).json("Something went wrong");
   }
 });
