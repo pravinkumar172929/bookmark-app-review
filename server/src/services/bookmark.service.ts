@@ -1,6 +1,6 @@
 import { insertBookmark } from "../repositories/bookmark.repo";
 
-export const createBookmrk = async (
+export const createBookmark = async (
   userId: string,
   title: string,
   url: string
