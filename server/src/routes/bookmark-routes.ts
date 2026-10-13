@@ -62,8 +62,6 @@ bookmarkRouter.get("/", requireAuth, async (req, res) => {
       [userId, `%${search}%`]
     );
 
-    // logger.info({ countResult }, "Total bookmarks properties");
-
     const totalBookmarks = Number(countResult.rows[0].count);
 
     const totalPages = Math.ceil(totalBookmarks / limit);
@@ -71,13 +69,10 @@ bookmarkRouter.get("/", requireAuth, async (req, res) => {
     logger.info({ totalBookmarks }, "Total bookmarks");
     logger.info({ totalPages }, "Total pages");
 
-    if (result.rows.length === 0) {
-      return res.status(200).json([]);
-    }
-
     const userBookmarks = result.rows;
 
     logger.info(userBookmarks);
+
     return res.status(200).json({
       bookmarks: userBookmarks,
       pagination: {
