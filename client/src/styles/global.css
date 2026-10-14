@@ -1,0 +1,24 @@
+/* global.css */
+
+body {
+  font-family: Inter, system-ui, Arial, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+a {
+  color: var(--color-primary);
+}
+
+#root {
+  min-height: 100vh;
+}
