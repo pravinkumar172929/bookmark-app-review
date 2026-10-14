@@ -77,7 +77,7 @@ const Login = () => {
       </form>
 
       <Link to="/signup">Create an account</Link>
-      <Button>Normal</Button>
+      <Button onClick={() => alert("hi")}>Normal</Button>
       <Button disabled>Disabled</Button>
       <Button disabled={false}>Enabled</Button>
     </>
