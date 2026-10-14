@@ -89,9 +89,9 @@ const CreateBookmark = () => {
           Add Bookmark
         </Button>
 
-        <button type="button" onClick={cancelHandler}>
+        <Button variant="secondary" type="button" onClick={cancelHandler}>
           Cancel
-        </button>
+        </Button>
       </form>
     </>
   );

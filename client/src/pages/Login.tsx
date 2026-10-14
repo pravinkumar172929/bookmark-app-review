@@ -80,6 +80,10 @@ const Login = () => {
       <Button onClick={() => alert("hi")}>Normal</Button>
       <Button disabled>Disabled</Button>
       <Button disabled={false}>Enabled</Button>
+
+      <Button variant="primary">Add Bookmark</Button>
+
+      <Button variant="secondary">Cancel</Button>
     </>
   );
 };
