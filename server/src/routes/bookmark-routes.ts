@@ -39,12 +39,7 @@ bookmarkRouter.get("/", requireAuth, async (req, res) => {
   const limit = 10;
   const offset = (page - 1) * limit;
 
-  logger.info({ search }, "Search parameter received");
-
-  logger.info({ sort }, "Sort parameter");
-
-  logger.info({ userId }, "Fetching bookmarks for user");
-  logger.info({ page }, "Page parameter");
+  logger.info({ userId, search, sort, page }, "Get bookmark params");
 
   try {
     const result = await pool.query(
