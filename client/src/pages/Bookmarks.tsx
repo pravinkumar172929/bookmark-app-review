@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../components/ui/Button/Button";
 
 type Bookmark = {
   id: string;
@@ -74,15 +75,15 @@ const Bookmarks = () => {
           </div>
         ))
       )}
-      <button onClick={() => setPage((prev) => prev - 1)} disabled={page === 1}>
+      <Button onClick={() => setPage((prev) => prev - 1)} disabled={page === 1}>
         Previous
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => setPage((prev) => prev + 1)}
         disabled={page >= totalPages}
       >
         Next
-      </button>
+      </Button>
     </>
   );
 };

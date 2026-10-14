@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../components/ui/Button/Button";
 
 const CreateBookmark = () => {
   const navigate = useNavigate();
@@ -84,9 +85,9 @@ const CreateBookmark = () => {
         />
         {error && <p>{error}</p>}
 
-        <button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading}>
           Add Bookmark
-        </button>
+        </Button>
 
         <button type="button" onClick={cancelHandler}>
           Cancel
