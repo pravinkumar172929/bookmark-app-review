@@ -73,13 +73,13 @@ bookmarkRouter.get("/", requireAuth, async (req, res) => {
       [userId, `%${search}%`, limit, offset]
     );
 
-    // const countResult = await pool.query(
-    //   `SELECT COUNT(*) FROM bookmarks
-    //   WHERE user_id = $1 AND title ILIKE $2`,
-    //   [userId, `%${search}%`]
-    // );
+    const countResult = await pool.query(
+      `SELECT COUNT(*) FROM bookmarks
+      WHERE user_id = $1 AND title ILIKE $2`,
+      [userId, `%${search}%`]
+    );
 
-    const countResult = await countBookmarksByUser(userId, search);
+    // const countResult = await countBookmarksByUser(userId, search);
 
     const totalBookmarks = Number(countResult.rows[0].count);
 

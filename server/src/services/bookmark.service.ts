@@ -1,4 +1,8 @@
-import { insertBookmark } from "../repositories/bookmark.repo";
+import {
+  countBookmarksByUser,
+  findBookmarksByUser,
+  insertBookmark,
+} from "../repositories/bookmark.repo";
 
 export const createBookmark = async (
   userId: string,
@@ -10,4 +14,36 @@ export const createBookmark = async (
   }
 
   return insertBookmark(userId, title, url);
+};
+
+export const getBookmarks = async (
+  userId: string,
+  search: string,
+  sort: "ASC" | "DESC",
+  limit: number,
+  page: number
+) => {
+  const offset = (page - 1) * limit;
+
+  const userBookmarks = await findBookmarksByUser(
+    userId,
+    search,
+    sort,
+    limit,
+    offset
+  );
+
+  const totalBookmarks = await countBookmarksByUser(userId, search);
+
+  const totalPages = Math.ceil(totalBookmarks / limit);
+
+  return {
+    bookmarks: userBookmarks,
+    pagination: {
+      page,
+      limit,
+      totalBookmarks,
+      totalPages,
+    },
+  };
 };
