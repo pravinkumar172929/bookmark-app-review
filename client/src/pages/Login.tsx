@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../components/ui/Button/Button";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -76,6 +77,9 @@ const Login = () => {
       </form>
 
       <Link to="/signup">Create an account</Link>
+      <Button>Normal</Button>
+      <Button disabled>Disabled</Button>
+      <Button disabled={false}>Enabled</Button>
     </>
   );
 };
