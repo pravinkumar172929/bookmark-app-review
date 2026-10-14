@@ -3,7 +3,10 @@ import { pool } from "../db";
 import requireAuth from "../middleware/requireAuth";
 import logger from "../logger";
 import { createBookmark } from "../services/bookmark.service";
-import { findBookmarksByUser } from "../repositories/bookmark.repo";
+import {
+  countBookmarksByUser,
+  findBookmarksByUser,
+} from "../repositories/bookmark.repo";
 
 const bookmarkRouter = Router();
 
@@ -70,11 +73,13 @@ bookmarkRouter.get("/", requireAuth, async (req, res) => {
       [userId, `%${search}%`, limit, offset]
     );
 
-    const countResult = await pool.query(
-      `SELECT COUNT(*) FROM bookmarks
-      WHERE user_id = $1 AND title ILIKE $2`,
-      [userId, `%${search}%`]
-    );
+    // const countResult = await pool.query(
+    //   `SELECT COUNT(*) FROM bookmarks
+    //   WHERE user_id = $1 AND title ILIKE $2`,
+    //   [userId, `%${search}%`]
+    // );
+
+    const countResult = await countBookmarksByUser(userId, search);
 
     const totalBookmarks = Number(countResult.rows[0].count);
 
@@ -84,14 +89,14 @@ bookmarkRouter.get("/", requireAuth, async (req, res) => {
     //   { totalBookmarks, totalPages },
     //   "Total bookmarks and total pages"
     // );
-    // const userBookmarks = result.rows;
-    const userBookmarks = await findBookmarksByUser(
-      userId,
-      search,
-      sort,
-      limit,
-      offset
-    );
+    const userBookmarks = result.rows;
+    // const userBookmarks = await findBookmarksByUser(
+    //   userId,
+    //   search,
+    //   sort,
+    //   limit,
+    //   offset
+    // );
 
     // logger.info(userBookmarks);
 

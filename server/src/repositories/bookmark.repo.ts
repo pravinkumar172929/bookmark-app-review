@@ -39,3 +39,15 @@ export const findBookmarksByUser = async (
 
   return result.rows;
 };
+
+export const countBookmarksByUser = async (userId: string, search: string) => {
+  const result = await pool.query(
+    `SELECT COUNT(*) FROM bookmarks
+      WHERE user_id = $1 AND title ILIKE $2`,
+    [userId, `%${search}%`]
+  );
+
+  logger.info({ result }, "bookmark count");
+
+  return result.rows[0].count;
+};
