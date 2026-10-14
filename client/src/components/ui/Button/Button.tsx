@@ -7,6 +7,7 @@ type ButtonProps = {
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
   variant?: "primary" | "secondary";
+  loading?: boolean;
 };
 
 export const Button = ({
@@ -14,6 +15,7 @@ export const Button = ({
   variant = "primary",
   disabled = false,
   type = "button",
+  loading = false,
   onClick,
 }: ButtonProps) => {
   return (
@@ -21,9 +23,9 @@ export const Button = ({
       className={`${styles.button} ${styles[variant]}`}
       type={type}
       onClick={onClick}
-      disabled={disabled}
+      disabled={disabled || loading}
     >
-      {children}
+      {loading ? "Loading" : children}
     </button>
   );
 };

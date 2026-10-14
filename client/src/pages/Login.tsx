@@ -84,6 +84,11 @@ const Login = () => {
       <Button variant="primary">Add Bookmark</Button>
 
       <Button variant="secondary">Cancel</Button>
+
+      <Button loading={false}>Add Bookmark</Button>
+
+      <Button loading={true}>Add Bookmark</Button>
+      <Button loading>Save Changes</Button>
     </>
   );
 };

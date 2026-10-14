@@ -85,7 +85,7 @@ const CreateBookmark = () => {
         />
         {error && <p>{error}</p>}
 
-        <Button type="submit" disabled={loading}>
+        <Button type="submit" loading={loading}>
           Add Bookmark
         </Button>
 
