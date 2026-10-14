@@ -57,12 +57,7 @@ bookmarkRouter.get("/", requireAuth, async (req, res) => {
   const limit = 10;
   const offset = (page - 1) * limit;
 
-  logger.info({ search }, "Search parameter received");
-
-  logger.info({ sort }, "Sort parameter");
-
-  logger.info({ userId }, "Fetching bookmarks for user");
-  logger.info({ page }, "Page parameter");
+  logger.info({ userId, search, sort, page }, "Get bookmark params");
 
   try {
     const result = await pool.query(
@@ -84,8 +79,10 @@ bookmarkRouter.get("/", requireAuth, async (req, res) => {
 
     const totalPages = Math.ceil(totalBookmarks / limit);
 
-    logger.info({ totalBookmarks }, "Total bookmarks");
-    logger.info({ totalPages }, "Total pages");
+    logger.info(
+      { totalBookmarks, totalPages },
+      "Total bookmarks and total pages"
+    );
 
     const userBookmarks = result.rows;
 
