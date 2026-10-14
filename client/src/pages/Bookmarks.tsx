@@ -14,24 +14,28 @@ const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [search, setSearch] = useState("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     const fetchBookmarks = async () => {
       const res = await fetch(
-        `http://localhost:5001/api/bookmarks?search=${search}&sort=${sortOrder}`,
+        `http://localhost:5001/api/bookmarks?search=${search}&sort=${sortOrder}&page=${page}`,
         {
           credentials: "include",
         }
       );
       const data = await res.json();
-      setBookmarks(data);
+      setBookmarks(data.bookmarks);
+      setTotalPages(data.pagination.totalPages);
     };
 
     fetchBookmarks();
-  }, [search, sortOrder]);
+  }, [search, sortOrder, page]);
 
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
+    setPage(1);
   };
 
   const editingHandler = (bookmark: Bookmark) => {
@@ -47,6 +51,18 @@ const Bookmarks = () => {
         value={search}
         onChange={searchHandler}
       />
+
+      <select
+        value={sortOrder}
+        onChange={(event) => {
+          setSortOrder(event.target.value as "asc" | "desc");
+          setPage(1);
+        }}
+      >
+        <option value="desc">Newest First</option>
+        <option value="asc">Oldest First</option>
+      </select>
+
       {bookmarks.length === 0 ? (
         <p>No bookmarks found</p>
       ) : (
@@ -58,14 +74,15 @@ const Bookmarks = () => {
           </div>
         ))
       )}
-
-      <select
-        value={sortOrder}
-        onChange={(event) => setSortOrder(event.target.value as "asc" | "desc")}
+      <button onClick={() => setPage((prev) => prev - 1)} disabled={page === 1}>
+        Previous
+      </button>
+      <button
+        onClick={() => setPage((prev) => prev + 1)}
+        disabled={page >= totalPages}
       >
-        <option value="desc">Newest First</option>
-        <option value="asc">Oldest First</option>
-      </select>
+        Next
+      </button>
     </>
   );
 };

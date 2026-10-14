@@ -35,27 +35,50 @@ bookmarkRouter.get("/", requireAuth, async (req, res) => {
   const userId = req.session.userId;
   const search = typeof req.query.search === "string" ? req.query.search : "";
   const sort = req.query.sort === "asc" ? "ASC" : "DESC";
+  const page = Number(req.query.page) || 1;
+  const limit = 10;
+  const offset = (page - 1) * limit;
 
-  logger.info({ search }, "Search parameter received");
-
-  logger.info({ sort }, "Sort parameter");
-
-  logger.info({ userId }, "Fetching bookmarks for user");
+  logger.info({ userId, search, sort, page }, "Get bookmark params");
 
   try {
     const result = await pool.query(
-      `SELECT id, title, url, created_at FROM bookmarks WHERE user_id =$1 AND title ILIKE $2 ORDER BY created_at ${sort}`,
+      `SELECT id, title, url, created_at 
+      FROM bookmarks 
+      WHERE user_id =$1 AND title ILIKE $2 
+      ORDER BY created_at ${sort} 
+      LIMIT $3 OFFSET $4`,
+      [userId, `%${search}%`, limit, offset]
+    );
+
+    const countResult = await pool.query(
+      `SELECT COUNT(*) FROM bookmarks
+      WHERE user_id = $1 AND title ILIKE $2`,
       [userId, `%${search}%`]
     );
 
-    if (result.rows.length === 0) {
-      return res.status(200).json([]);
-    }
+    const totalBookmarks = Number(countResult.rows[0].count);
+
+    const totalPages = Math.ceil(totalBookmarks / limit);
+
+    logger.info(
+      { totalBookmarks, totalPages },
+      "Total bookmarks and total pages"
+    );
 
     const userBookmarks = result.rows;
 
     logger.info(userBookmarks);
-    return res.status(200).json(userBookmarks);
+
+    return res.status(200).json({
+      bookmarks: userBookmarks,
+      pagination: {
+        page,
+        limit,
+        totalBookmarks,
+        totalPages,
+      },
+    });
   } catch (error) {
     logger.error({}, "bookmark fetching failed");
     return res.status(500).json("Something went wrong");
