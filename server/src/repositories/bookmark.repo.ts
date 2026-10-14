@@ -1,4 +1,5 @@
 import { pool } from "../db";
+import logger from "../logger";
 
 export const insertBookmark = async (
   userId: string,
@@ -13,4 +14,28 @@ export const insertBookmark = async (
   );
 
   return result.rows[0];
+};
+
+export const findBookmarksByUser = async (
+  userId: string,
+  search: string,
+  sort: "ASC" | "DESC",
+  limit: number,
+  offset: number
+) => {
+  const result = await pool.query(
+    `SELECT id, title, url, created_at 
+      FROM bookmarks 
+      WHERE user_id =$1 AND title ILIKE $2 
+      ORDER BY created_at ${sort} 
+      LIMIT $3 OFFSET $4`,
+    [userId, `%${search}%`, limit, offset]
+  );
+
+  logger.info(
+    { bookmarks: result.rows, count: result.rowCount },
+    "Bookmarks fetched from database"
+  );
+
+  return result.rows;
 };

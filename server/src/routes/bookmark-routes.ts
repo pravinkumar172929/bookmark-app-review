@@ -3,6 +3,7 @@ import { pool } from "../db";
 import requireAuth from "../middleware/requireAuth";
 import logger from "../logger";
 import { createBookmark } from "../services/bookmark.service";
+import { findBookmarksByUser } from "../repositories/bookmark.repo";
 
 const bookmarkRouter = Router();
 
@@ -79,14 +80,20 @@ bookmarkRouter.get("/", requireAuth, async (req, res) => {
 
     const totalPages = Math.ceil(totalBookmarks / limit);
 
-    logger.info(
-      { totalBookmarks, totalPages },
-      "Total bookmarks and total pages"
+    // logger.info(
+    //   { totalBookmarks, totalPages },
+    //   "Total bookmarks and total pages"
+    // );
+    // const userBookmarks = result.rows;
+    const userBookmarks = await findBookmarksByUser(
+      userId,
+      search,
+      sort,
+      limit,
+      offset
     );
 
-    const userBookmarks = result.rows;
-
-    logger.info(userBookmarks);
+    // logger.info(userBookmarks);
 
     return res.status(200).json({
       bookmarks: userBookmarks,
