@@ -33,7 +33,7 @@ export const getBookmarks = async (
     offset
   );
 
-  const totalBookmarks = await countBookmarksByUser(userId, search);
+  const totalBookmarks = Number(await countBookmarksByUser(userId, search));
 
   const totalPages = Math.ceil(totalBookmarks / limit);
 
