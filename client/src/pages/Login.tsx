@@ -9,6 +9,7 @@ const Login = () => {
   const [signinValues, setSigninValues] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [title, setTitle] = useState("");
 
   const signinHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -91,7 +92,7 @@ const Login = () => {
       <Button loading={true}>Add Bookmark</Button>
       <Button loading>Save Changes</Button>
 
-      <Input />
+      <Input value={title} onChange={setTitle} />
     </>
   );
 };
