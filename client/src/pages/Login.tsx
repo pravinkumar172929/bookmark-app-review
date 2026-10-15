@@ -11,6 +11,11 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
+  const [sortOrder, setSortOrder] = useState<"asce" | "dec">("dec");
+  const sortOptions = [
+    { label: "Newest First", value: "desc" },
+    { label: "Oldest First", value: "asc" },
+  ];
 
   const signinHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -94,7 +99,11 @@ const Login = () => {
       <Button loading>Save Changes</Button>
 
       <Input value={title} onChange={setTitle} />
-      <Select />
+      <Select
+        value={sortOrder}
+        options={sortOptions}
+        onChange={(value) => setSortOrder(value as "asce" | "dec")}
+      />
     </>
   );
 };
