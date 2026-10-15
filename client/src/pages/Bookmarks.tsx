@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/Button/Button";
 import { Input } from "../components/ui/Input/Input";
 import { Select } from "../components/ui/Select/Select";
+import { Card } from "../components/ui/Card/Card";
 
 type Bookmark = {
   id: string;
@@ -73,11 +74,11 @@ const Bookmarks = () => {
         <p>No bookmarks found</p>
       ) : (
         bookmarks.map((bookmark) => (
-          <div key={bookmark.id}>
+          <Card key={bookmark.id}>
             <p>{bookmark.title}</p>
             <p>{bookmark.url}</p>
             <Button onClick={() => editingHandler(bookmark)}>Edit</Button>
-          </div>
+          </Card>
         ))
       )}
       <Button onClick={() => setPage((prev) => prev - 1)} disabled={page === 1}>
