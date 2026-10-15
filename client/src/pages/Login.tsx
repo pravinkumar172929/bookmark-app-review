@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/Button/Button";
 import { Input } from "../components/ui/Input/Input";
+import { Select } from "../components/ui/Select/Select";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -93,6 +94,7 @@ const Login = () => {
       <Button loading>Save Changes</Button>
 
       <Input value={title} onChange={setTitle} />
+      <Select />
     </>
   );
 };
