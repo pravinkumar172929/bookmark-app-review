@@ -5,13 +5,16 @@ import Bookmarks from "./pages/Bookmarks";
 import CreateBookmark from "./pages/CreateBookmark";
 import EditBookmark from "./pages/EditBookmark";
 import { AppLayout } from "./components/ui/Layout/AppLayout/AppLayout";
+import { AuthLayout } from "./components/ui/Layout/AuthLayout/AuthLayout";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route element={<AuthLayout />}>
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Route>
 
         <Route element={<AppLayout />}>
           <Route path="/bookmarks" element={<Bookmarks />} />
