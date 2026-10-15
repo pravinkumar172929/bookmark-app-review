@@ -4,6 +4,7 @@ import { Button } from "../components/ui/Button/Button";
 import { Input } from "../components/ui/Input/Input";
 import { Select } from "../components/ui/Select/Select";
 import { Card } from "../components/ui/Card/Card";
+import { Header } from "../components/ui/Layout/Header/Header";
 
 type Bookmark = {
   id: string;
@@ -48,6 +49,7 @@ const Bookmarks = () => {
 
   return (
     <>
+      <Header />
       <Link to="/bookmarks/new">Create a bookmark</Link>
       <Input
         type="text"
