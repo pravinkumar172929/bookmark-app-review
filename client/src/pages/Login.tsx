@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/Button/Button";
 import { Input } from "../components/ui/Input/Input";
+import { Spinner } from "../components/ui/Spinner/Spinner";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -74,6 +75,7 @@ const Login = () => {
       </form>
 
       <Link to="/signup">Create an account</Link>
+      <Spinner />
     </>
   );
 };
