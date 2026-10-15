@@ -68,7 +68,7 @@ const CreateBookmark = () => {
         <Input
           id="url"
           label="URL"
-          type="text"
+          type="url"
           placeholder="URL"
           value={url}
           onChange={setUrl}

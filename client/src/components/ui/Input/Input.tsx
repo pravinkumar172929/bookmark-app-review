@@ -3,7 +3,7 @@ import styles from "./Input.module.css";
 type InputProps = {
   id?: string;
   label?: string;
-  type?: "text" | "email" | "password";
+  type?: "text" | "email" | "password" | "url";
   placeholder?: string;
   value: string;
   onChange: (value: string) => void;

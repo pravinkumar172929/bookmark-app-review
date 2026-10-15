@@ -102,7 +102,7 @@ const EditBookmark = () => {
         <Input
           id="url"
           label="URL"
-          type="text"
+          type="url"
           placeholder="URL"
           value={url}
           onChange={setUrl}
@@ -110,7 +110,7 @@ const EditBookmark = () => {
         {error && <p>{error}</p>}
 
         <Button type="submit" disabled={loading}>
-          Add Bookmark
+          Update Bookmark
         </Button>
 
         <Button variant="secondary" type="button" onClick={cancelHandler}>

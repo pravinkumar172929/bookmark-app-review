@@ -65,9 +65,11 @@ const Login = () => {
           value={password}
           onChange={setPassword}
         />
+
         {error && <p>{error}</p>}
-        <Button type="submit" disabled={loading}>
-          {loading ? "Siginng In" : "Sign In"}
+
+        <Button type="submit" loading={loading}>
+          Sign In
         </Button>
       </form>
 

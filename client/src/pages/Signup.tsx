@@ -79,9 +79,11 @@ export const Signup = () => {
           value={confirmPassword}
           onChange={setConfirmPassword}
         />
+
         {error && <p>{error}</p>}
-        <Button type="submit" disabled={loading}>
-          {loading ? "Signing Up" : "Sign Up"}
+
+        <Button type="submit" loading={loading}>
+          Sign Up
         </Button>
       </form>
       <Link to="/">Already have an account</Link>
