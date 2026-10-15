@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/Button/Button";
 import { Input } from "../components/ui/Input/Input";
+import styles from "./../styles/auth-form.module.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ const Login = () => {
 
   return (
     <>
-      <form onSubmit={submitHandler}>
+      <form onSubmit={submitHandler} className={styles.form}>
         <Input
           id="email"
           label="Email"
@@ -73,7 +74,9 @@ const Login = () => {
         </Button>
       </form>
 
-      <Link to="/signup">Create an account</Link>
+      <Link to="/signup" className={styles.footer}>
+        Create an account
+      </Link>
     </>
   );
 };
