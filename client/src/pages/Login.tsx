@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/Button/Button";
+import { Input } from "../components/ui/Input/Input";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -89,6 +90,8 @@ const Login = () => {
 
       <Button loading={true}>Add Bookmark</Button>
       <Button loading>Save Changes</Button>
+
+      <Input />
     </>
   );
 };
