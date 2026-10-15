@@ -18,7 +18,7 @@ export const Input = ({
   onChange,
 }: InputProps) => {
   return (
-    <div>
+    <div className={styles.field}>
       <label htmlFor={id}>{label}</label>
       <input
         className={styles.input}
