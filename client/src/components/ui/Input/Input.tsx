@@ -21,6 +21,7 @@ export const Input = ({
     <div className={styles.field}>
       <label htmlFor={id}>{label}</label>
       <input
+        id={id}
         className={styles.input}
         type={type}
         placeholder={placeholder}

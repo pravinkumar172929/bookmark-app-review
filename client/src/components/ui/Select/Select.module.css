@@ -5,3 +5,9 @@
   background-color: var(--color-surface);
   color: var(--color-text);
 }
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
