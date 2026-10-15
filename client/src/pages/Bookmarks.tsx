@@ -4,6 +4,7 @@ import { Button } from "../components/ui/Button/Button";
 import { Input } from "../components/ui/Input/Input";
 import { Select } from "../components/ui/Select/Select";
 import { Card } from "../components/ui/Card/Card";
+import styles from "./Bookmarks.module.css";
 
 type Bookmark = {
   id: string;
@@ -70,17 +71,20 @@ const Bookmarks = () => {
         }}
       ></Select>
 
-      {bookmarks.length === 0 ? (
-        <p>No bookmarks found</p>
-      ) : (
-        bookmarks.map((bookmark) => (
-          <Card key={bookmark.id}>
-            <p>{bookmark.title}</p>
-            <p>{bookmark.url}</p>
-            <Button onClick={() => editingHandler(bookmark)}>Edit</Button>
-          </Card>
-        ))
-      )}
+      <div className={styles.bookmarkGrid}>
+        {bookmarks.length === 0 ? (
+          <p>No bookmarks found</p>
+        ) : (
+          bookmarks.map((bookmark) => (
+            <Card key={bookmark.id}>
+              <p>{bookmark.title}</p>
+              <p>{bookmark.url}</p>
+              <Button onClick={() => editingHandler(bookmark)}>Edit</Button>
+            </Card>
+          ))
+        )}
+      </div>
+
       <Button onClick={() => setPage((prev) => prev - 1)} disabled={page === 1}>
         Previous
       </Button>
