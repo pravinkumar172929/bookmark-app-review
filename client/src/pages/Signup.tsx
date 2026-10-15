@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Input } from "../components/ui/Input/Input";
 import { Button } from "../components/ui/Button/Button";
 
 export const Signup = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -41,6 +43,8 @@ export const Signup = () => {
         setError(data);
         return;
       }
+
+      navigate("/");
     } catch (error) {
       setError("Something went wrong!");
     } finally {
