@@ -109,7 +109,7 @@ const EditBookmark = () => {
         />
         {error && <p>{error}</p>}
 
-        <Button type="submit" disabled={loading}>
+        <Button type="submit" loading={loading}>
           Update Bookmark
         </Button>
 
