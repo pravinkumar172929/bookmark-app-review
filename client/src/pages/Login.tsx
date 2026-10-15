@@ -2,36 +2,21 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/Button/Button";
 import { Input } from "../components/ui/Input/Input";
-import { Select } from "../components/ui/Select/Select";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const [signinValues, setSigninValues] = useState({ email: "", password: "" });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [title, setTitle] = useState("");
-  const [sortOrder, setSortOrder] = useState<"asce" | "dec">("dec");
-  const sortOptions = [
-    { label: "Newest First", value: "desc" },
-    { label: "Oldest First", value: "asc" },
-  ];
-
-  const signinHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setError("");
-    setSigninValues((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
-  };
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const signinData = {
-      email: signinValues.email,
-      password: signinValues.password,
+      email: email,
+      password: password,
     };
 
     try {
@@ -64,46 +49,29 @@ const Login = () => {
   return (
     <>
       <form onSubmit={submitHandler}>
-        <input
+        <Input
+          id="email"
+          label="Email"
           type="email"
           placeholder="Email"
-          onChange={signinHandler}
-          value={signinValues.email}
-          name="email"
+          value={email}
+          onChange={setEmail}
         />
-        <input
+        <Input
+          id="password"
+          label="Password"
           type="password"
           placeholder="Password"
-          onChange={signinHandler}
-          value={signinValues.password}
-          name="password"
+          value={password}
+          onChange={setPassword}
         />
         {error && <p>{error}</p>}
-        <button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading}>
           {loading ? "Siginng In" : "Sign In"}
-        </button>
+        </Button>
       </form>
 
       <Link to="/signup">Create an account</Link>
-      <Button onClick={() => alert("hi")}>Normal</Button>
-      <Button disabled>Disabled</Button>
-      <Button disabled={false}>Enabled</Button>
-
-      <Button variant="primary">Add Bookmark</Button>
-
-      <Button variant="secondary">Cancel</Button>
-
-      <Button loading={false}>Add Bookmark</Button>
-
-      <Button loading={true}>Add Bookmark</Button>
-      <Button loading>Save Changes</Button>
-
-      <Input value={title} onChange={setTitle} />
-      <Select
-        value={sortOrder}
-        options={sortOptions}
-        onChange={(value) => setSortOrder(value as "asce" | "dec")}
-      />
     </>
   );
 };
