@@ -75,7 +75,6 @@ const Login = () => {
       </form>
 
       <Link to="/signup">Create an account</Link>
-      <Spinner />
     </>
   );
 };

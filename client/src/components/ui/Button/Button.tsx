@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import styles from "./Button.module.css";
+import { Spinner } from "../Spinner/Spinner";
 
 type ButtonProps = {
   children: ReactNode;
@@ -25,7 +26,7 @@ export const Button = ({
       onClick={onClick}
       disabled={disabled || loading}
     >
-      {loading ? "Loading" : children}
+      {loading ? <Spinner /> : children}
     </button>
   );
 };
