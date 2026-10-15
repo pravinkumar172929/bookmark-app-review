@@ -1,36 +1,27 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { Input } from "../components/ui/Input/Input";
+import { Button } from "../components/ui/Button/Button";
 
 export const Signup = () => {
-  const [signupValues, setSignupValues] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const signupHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setError("");
-    setSignupValues((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
-  };
-
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (signupValues.password !== signupValues.confirmPassword) {
+    if (password !== confirmPassword) {
       setError("Passwords don't match!");
       return;
     }
 
     const signupData = {
-      email: signupValues.email,
-      password: signupValues.password,
+      email: email,
+      password: password,
     };
 
     try {
@@ -60,31 +51,34 @@ export const Signup = () => {
   return (
     <>
       <form onSubmit={submitHandler}>
-        <input
+        <Input
+          id="email"
+          label="Email"
           type="email"
           placeholder="Email"
-          value={signupValues.email}
-          name="email"
-          onChange={signupHandler}
+          value={email}
+          onChange={setEmail}
         />
-        <input
+        <Input
+          id="password"
+          label="Password"
           type="password"
           placeholder="Password"
-          value={signupValues.password}
-          name="password"
-          onChange={signupHandler}
+          value={password}
+          onChange={setPassword}
         />
-        <input
+        <Input
+          id="confirm-password"
+          label="Confirm Password"
           type="password"
           placeholder="Confirm Password"
-          value={signupValues.confirmPassword}
-          name="confirmPassword"
-          onChange={signupHandler}
+          value={confirmPassword}
+          onChange={setConfirmPassword}
         />
         {error && <p>{error}</p>}
-        <button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading}>
           {loading ? "Signing Up" : "Sign Up"}
-        </button>
+        </Button>
       </form>
       <Link to="/">Already have an account</Link>
     </>
