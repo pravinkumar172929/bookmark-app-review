@@ -4,9 +4,9 @@ export type AuthStatus = "authenticated" | "unauthenticated";
 
 type AuthContextType = {
   status: AuthStatus;
-  setStatus: () => void;
+  setStatus: (status: AuthStatus) => void;
 };
 
-export const authContext = createContext<AuthContextType | undefined>(
+export const AuthContext = createContext<AuthContextType | undefined>(
   undefined
 );
