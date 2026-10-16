@@ -1,32 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../components/ui/Button/Button";
+import { Input } from "../components/ui/Input/Input";
 
 const CreateBookmark = () => {
   const navigate = useNavigate();
 
-  const [bookmarkValues, setBookmarkValues] = useState({
-    title: "",
-    url: "",
-  });
+  const [title, setTitle] = useState("");
+  const [url, setUrl] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const bookmarkHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setError("");
-
-    setBookmarkValues((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const bookmarkData = {
-      title: bookmarkValues.title,
-      url: bookmarkValues.url,
+      title: title,
+      url: url,
     };
 
     try {
@@ -58,39 +48,40 @@ const CreateBookmark = () => {
   };
 
   const cancelHandler = () => {
-    setBookmarkValues({
-      title: "",
-      url: "",
-    });
+    setTitle("");
+    setUrl("");
+
     navigate("/bookmarks");
   };
 
   return (
     <>
       <form onSubmit={submitHandler}>
-        <input
+        <Input
+          id="title"
+          label="Title"
           type="text"
           placeholder="Title"
-          name="title"
-          value={bookmarkValues.title}
-          onChange={bookmarkHandler}
+          value={title}
+          onChange={setTitle}
         />
-        <input
-          type="text"
+        <Input
+          id="url"
+          label="URL"
+          type="url"
           placeholder="URL"
-          name="url"
-          value={bookmarkValues.url}
-          onChange={bookmarkHandler}
+          value={url}
+          onChange={setUrl}
         />
         {error && <p>{error}</p>}
 
-        <button type="submit" disabled={loading}>
+        <Button type="submit" loading={loading}>
           Add Bookmark
-        </button>
+        </Button>
 
-        <button type="button" onClick={cancelHandler}>
+        <Button variant="secondary" type="button" onClick={cancelHandler}>
           Cancel
-        </button>
+        </Button>
       </form>
     </>
   );

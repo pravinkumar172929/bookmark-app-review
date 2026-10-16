@@ -1,28 +1,23 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../components/ui/Button/Button";
+import { Input } from "../components/ui/Input/Input";
+import styles from "./../styles/auth-form.module.css";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const [signinValues, setSigninValues] = useState({ email: "", password: "" });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const signinHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setError("");
-    setSigninValues((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
-  };
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const signinData = {
-      email: signinValues.email,
-      password: signinValues.password,
+      email: email,
+      password: password,
     };
 
     try {
@@ -54,28 +49,34 @@ const Login = () => {
 
   return (
     <>
-      <form onSubmit={submitHandler}>
-        <input
+      <form onSubmit={submitHandler} className={styles.form}>
+        <Input
+          id="email"
+          label="Email"
           type="email"
           placeholder="Email"
-          onChange={signinHandler}
-          value={signinValues.email}
-          name="email"
+          value={email}
+          onChange={setEmail}
         />
-        <input
+        <Input
+          id="password"
+          label="Password"
           type="password"
           placeholder="Password"
-          onChange={signinHandler}
-          value={signinValues.password}
-          name="password"
+          value={password}
+          onChange={setPassword}
         />
+
         {error && <p>{error}</p>}
-        <button type="submit" disabled={loading}>
-          {loading ? "Siginng In" : "Sign In"}
-        </button>
+
+        <Button type="submit" loading={loading}>
+          Sign In
+        </Button>
       </form>
 
-      <Link to="/signup">Create an account</Link>
+      <Link to="/signup" className={styles.footer}>
+        Create an account
+      </Link>
     </>
   );
 };

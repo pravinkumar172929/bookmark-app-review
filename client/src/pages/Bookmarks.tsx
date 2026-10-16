@@ -1,5 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../components/ui/Button/Button";
+import { Input } from "../components/ui/Input/Input";
+import { Select } from "../components/ui/Select/Select";
+import { Card } from "../components/ui/Card/Card";
+import styles from "./Bookmarks.module.css";
 
 type Bookmark = {
   id: string;
@@ -33,8 +38,8 @@ const Bookmarks = () => {
     fetchBookmarks();
   }, [search, sortOrder, page]);
 
-  const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
+  const searchHandler = (value: string) => {
+    setSearch(value);
     setPage(1);
   };
 
@@ -45,44 +50,50 @@ const Bookmarks = () => {
   return (
     <>
       <Link to="/bookmarks/new">Create a bookmark</Link>
-      <input
+      <Input
         type="text"
         placeholder="Search bookmark"
         value={search}
         onChange={searchHandler}
       />
 
-      <select
+      <Select
+        id="bookmark-sort"
+        label="Sort Bookmarks"
         value={sortOrder}
-        onChange={(event) => {
-          setSortOrder(event.target.value as "asc" | "desc");
+        options={[
+          { label: "Newest First", value: "desc" },
+          { label: "Oldest First", value: "asc" },
+        ]}
+        onChange={(value) => {
+          setSortOrder(value as "asc" | "desc");
           setPage(1);
         }}
-      >
-        <option value="desc">Newest First</option>
-        <option value="asc">Oldest First</option>
-      </select>
+      ></Select>
 
-      {bookmarks.length === 0 ? (
-        <p>No bookmarks found</p>
-      ) : (
-        bookmarks.map((bookmark) => (
-          <div key={bookmark.id}>
-            <p>{bookmark.title}</p>
-            <p>{bookmark.url}</p>
-            <button onClick={() => editingHandler(bookmark)}>Edit</button>
-          </div>
-        ))
-      )}
-      <button onClick={() => setPage((prev) => prev - 1)} disabled={page === 1}>
+      <div className={styles.bookmarkGrid}>
+        {bookmarks.length === 0 ? (
+          <p>No bookmarks found</p>
+        ) : (
+          bookmarks.map((bookmark) => (
+            <Card key={bookmark.id}>
+              <p>{bookmark.title}</p>
+              <p>{bookmark.url}</p>
+              <Button onClick={() => editingHandler(bookmark)}>Edit</Button>
+            </Card>
+          ))
+        )}
+      </div>
+
+      <Button onClick={() => setPage((prev) => prev - 1)} disabled={page === 1}>
         Previous
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => setPage((prev) => prev + 1)}
         disabled={page >= totalPages}
       >
         Next
-      </button>
+      </Button>
     </>
   );
 };
