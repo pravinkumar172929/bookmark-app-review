@@ -6,7 +6,7 @@ type AuthProviderProps = {
 };
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [status, setStatus] = useState<AuthStatus>("unauthenticated");
+  const [status, setStatus] = useState<AuthStatus>("loading");
 
   useEffect(() => {
     const checkSession = async () => {
