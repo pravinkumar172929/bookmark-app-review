@@ -4,7 +4,7 @@ export type Theme = "light" | "dark";
 
 type ThemeContextType = {
   theme: Theme;
-  todggleTheme: () => void;
+  toggleTheme: () => void;
 };
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(
