@@ -6,6 +6,7 @@ import CreateBookmark from "./pages/CreateBookmark";
 import EditBookmark from "./pages/EditBookmark";
 import { AppLayout } from "./components/ui/Layout/AppLayout/AppLayout";
 import { AuthLayout } from "./components/ui/Layout/AuthLayout/AuthLayout";
+import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 
 function App() {
   return (
@@ -16,10 +17,12 @@ function App() {
           <Route path="/signup" element={<Signup />} />
         </Route>
 
-        <Route element={<AppLayout />}>
-          <Route path="/bookmarks" element={<Bookmarks />} />
-          <Route path="/bookmarks/new" element={<CreateBookmark />} />
-          <Route path="/bookmarks/:id/edit" element={<EditBookmark />} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<AppLayout />}>
+            <Route path="/bookmarks" element={<Bookmarks />} />
+            <Route path="/bookmarks/new" element={<CreateBookmark />} />
+            <Route path="/bookmarks/:id/edit" element={<EditBookmark />} />
+          </Route>
         </Route>
       </Routes>
     </>
