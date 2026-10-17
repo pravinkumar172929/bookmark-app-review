@@ -124,7 +124,7 @@ const Bookmarks = () => {
       </div>
 
       {totalPages > 1 && (
-        <>
+        <div className={styles.pagination}>
           <Button
             onClick={() => setPage((prev) => prev - 1)}
             disabled={page === 1}
@@ -137,7 +137,7 @@ const Bookmarks = () => {
           >
             Next
           </Button>
-        </>
+        </div>
       )}
     </>
   );
