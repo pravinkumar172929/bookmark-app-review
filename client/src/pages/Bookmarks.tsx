@@ -70,26 +70,31 @@ const Bookmarks = () => {
     <>
       <Link to="/bookmarks/new">Create a bookmark</Link>
       {error && <p>{error}</p>}
-      <Input
-        type="text"
-        placeholder="Search bookmark"
-        value={search}
-        onChange={searchHandler}
-      />
 
-      <Select
-        id="bookmark-sort"
-        label="Sort Bookmarks"
-        value={sortOrder}
-        options={[
-          { label: "Newest First", value: "desc" },
-          { label: "Oldest First", value: "asc" },
-        ]}
-        onChange={(value) => {
-          setSortOrder(value as "asc" | "desc");
-          setPage(1);
-        }}
-      ></Select>
+      {bookmarks.length !== 0 && (
+        <>
+          <Input
+            type="text"
+            placeholder="Search bookmark"
+            value={search}
+            onChange={searchHandler}
+          />
+
+          <Select
+            id="bookmark-sort"
+            label="Sort Bookmarks"
+            value={sortOrder}
+            options={[
+              { label: "Newest First", value: "desc" },
+              { label: "Oldest First", value: "asc" },
+            ]}
+            onChange={(value) => {
+              setSortOrder(value as "asc" | "desc");
+              setPage(1);
+            }}
+          ></Select>
+        </>
+      )}
 
       {loading ? (
         <Spinner />
