@@ -90,4 +90,12 @@ router.post("/logout", (req, res) => {
   });
 });
 
+router.get("/me", (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).json({ authenticated: false });
+  }
+
+  return res.status(200).json({ authenticated: true });
+});
+
 export default router;
