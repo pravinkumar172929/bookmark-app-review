@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/Button/Button";
 import { Input } from "../components/ui/Input/Input";
 import styles from "./../styles/auth-form.module.css";
+import { useAuth } from "../hooks/use-auth";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setStatus } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,6 +41,7 @@ const Login = () => {
         return;
       }
 
+      setStatus("authenticated");
       navigate("/bookmarks");
     } catch (error) {
       setError("Something went wrong!");

@@ -14,3 +14,11 @@
   --spacing-md: 16px;
   --spacing-lg: 24px;
 }
+
+[data-theme="dark"] {
+  --color-primary: #60a5fa;
+  --color-background: #0f172a;
+  --color-surface: #1e293b;
+  --color-text: #f1f5f9;
+  --color-border: #334155;
+}

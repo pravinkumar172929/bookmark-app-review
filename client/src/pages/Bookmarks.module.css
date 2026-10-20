@@ -4,6 +4,15 @@
   gap: 16px;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 24px;
+}
+
 @media (max-width: 600px) {
   .bookmarkGrid {
     grid-template-columns: 1fr;
